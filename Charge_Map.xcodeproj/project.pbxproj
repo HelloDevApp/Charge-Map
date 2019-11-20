@@ -14,6 +14,8 @@
 		5215665F2385DA4C000270F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5215665D2385DA4C000270F1 /* LaunchScreen.storyboard */; };
 		5215666A2385DA4C000270F1 /* Charge_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566692385DA4C000270F1 /* Charge_MapTests.swift */; };
 		521566752385DD34000270F1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566742385DD34000270F1 /* MapViewController.swift */; };
+		521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566782385DF73000270F1 /* CustomAnnotation.swift */; };
+		5215667B2385DFAD000270F1 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215667A2385DFAD000270F1 /* CustomAnnotationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		521566692385DA4C000270F1 /* Charge_MapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Charge_MapTests.swift; sourceTree = "<group>"; };
 		5215666B2385DA4C000270F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		521566742385DD34000270F1 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		521566782385DF73000270F1 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		5215667A2385DFAD000270F1 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				521566582385DA4B000270F1 /* Main.storyboard */,
+				521566782385DF73000270F1 /* CustomAnnotation.swift */,
+				5215667A2385DFAD000270F1 /* CustomAnnotationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,8 +223,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				521566532385DA4B000270F1 /* AppDelegate.swift in Sources */,
+				5215667B2385DFAD000270F1 /* CustomAnnotationView.swift in Sources */,
 				521566752385DD34000270F1 /* MapViewController.swift in Sources */,
 				521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */,
+				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
