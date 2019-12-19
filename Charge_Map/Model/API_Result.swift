@@ -10,73 +10,45 @@ import Foundation
 
 struct API_Result: Decodable {
     let nhits: Int?
-    let parameters: Parameters
-    let records: [Record]
-    let facet_groups: [FacetGroup]?
+    let records: [Record?]
 }
 
-// MARK: - FacetGroup
-struct FacetGroup: Decodable {
-    let facets: [Facet]
-    let name: String
-}
-
-// MARK: - Facet
-struct Facet: Decodable {
-    let count: Int
-    let path: String
-    let state: String
-    let name: String
-}
-
-// MARK: - Parameters
-struct Parameters: Decodable {
-    let dataset: String
-    let timezone: String
-    let rows: Int
-    let start: Int?
-    let format: String
-    let facet: [String]
-}
-
-// MARK: - Record
-struct Record: Decodable {
-    let datasetid: String
-    let recordid: String
+struct Record: Decodable, Equatable {
     let fields: Fields?
-    let geometry: Geometry?
-    let record_timestamp: String
+    static func == (lhs: Record, rhs: Record) -> Bool {
+        return lhs.fields?.coordonnees == rhs.fields?.coordonnees ? true : false
+    }
 }
 
-// MARK: - Fields
 struct Fields: Decodable {
-    let nom_reg: String?
-    let accessibilite: String?
-    let id_station: String?
-    let code_insee: String?
-    let acces_recharge: String?
-    let n_amenageur: String?
+    let type_prise: String?
+    let source: String?
     let ad_station: String?
     let date_maj: String?
-    let source: String?
-    let puiss_max: Double?
-    let observations: String?
+    let accessibilite: String?
     let n_station: String?
-    let id_pdc: String?
+    let coordonnees: [Double]?
+    let acces_recharge: String?
     let nbre_pdc: Int?
-    let code_epci: String?
-    let commune: String?
-    let nom_epci: String?
-    let nom_dep: String?
-    let coordonnees: [Double?]?
-    let type_prise: String?
-    let n_enseigne: String?
-    let n_operateur: String?
+    let puiss_max: Double?
+    
+    func countProperties() -> Int {
+        var valuesFilterArray = [Any]()
+        let mirror = Mirror(reflecting: self)
+        
+        for child in mirror.children {
+            if let value = child.value as? String {
+                valuesFilterArray.append(value)
+            } else if let value = child.value as? Int {
+                let valueConverted = String(value)
+                valuesFilterArray.append(valueConverted)
+            } else if let value = child.value as? Double {
+                let valueConverted = String(value)
+                valuesFilterArray.append(valueConverted)
+            } else {
+                continue
+            }
+        }
+        return valuesFilterArray.count
+    }
 }
-
-// MARK: - Geometry
-struct Geometry: Decodable {
-    let type: String
-    let coordinates: [Double]
-}
-

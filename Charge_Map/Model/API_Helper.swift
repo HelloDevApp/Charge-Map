@@ -14,16 +14,12 @@ class API_Helper {
     
     var parameters: [URLQueryItem] = [
     URLQueryItem(name: "dataset", value: "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve"),
-    URLQueryItem(name: "rows", value: "200"),
-    URLQueryItem(name: "facet", value: "nom_enseigne"),
-    
+    URLQueryItem(name: "lang", value: "fr"),
+    URLQueryItem(name: "rows", value: "10000"),
     URLQueryItem(name: "facet", value: "nbre_pdc"),
     URLQueryItem(name: "facet", value: "puiss_max"),
     URLQueryItem(name: "facet", value: "accessibilite"),
-    URLQueryItem(name: "facet", value: "commune"),
-    URLQueryItem(name: "facet", value: "nom_dep"),
-    URLQueryItem(name: "facet", value: "nom_reg"),
-    URLQueryItem(name: "facet", value: "nom_epci"),
+    URLQueryItem(name: "facet", value: "n_station"),
     ]
     
     private func createURL() -> URLComponents {
@@ -38,12 +34,13 @@ class API_Helper {
     }
     
     func addGeofilterUrl(latitude: String, longitude: String) {
-        
-        parameters.append(URLQueryItem(name: "geofilter.distance", value: "\(latitude),\(longitude),90000"))
-        
+
+        parameters.append(URLQueryItem(name: "geofilter.distance", value: "\(latitude),\(longitude),40000"))
+
     }
     
-    func getAnnotions(callback: @escaping (Bool, API_Result?) -> Void) {
+    func getAnnotations(callback: @escaping (Bool, API_Result?) -> Void) {
+        addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
         if let url = createURL().url {
             let session = URLSession(configuration: .default)
             
