@@ -60,4 +60,38 @@ class API_Helper {
             task.resume()
         }
     }
+    
+    func removeDuplicateRecords(result: API_Result) -> [Record?] {
+        let recordsWithoutDuplicates = result.records.removeDuplicates()
+        Datas.resultAPIObject = recordsWithoutDuplicates
+        return recordsWithoutDuplicates
+    }
+    
+    func convert(field: Fields) -> [[Any?]] {
+        let mirror = Mirror(reflecting: field)
+        let data = Datas()
+        
+        //        var test = mirror.children.map{ $0 }.filter{ ($0.value is String || $0.value is Int) }
+        for child in mirror.children {
+            if let label = child.label, let value = child.value as? String {
+                data.valuesAfterTypeCheck.append(value)
+                data.labelsAfterTypeCheck.append(label)
+            } else if let label = child.label, let value = child.value as? Int {
+                let valueConverted = String(value)
+                data.valuesAfterTypeCheck.append(valueConverted)
+                data.labelsAfterTypeCheck.append(label)
+            } else if let label = child.label, let value = child.value as? Double {
+                let valueConverted = String(value)
+                data.valuesAfterTypeCheck.append(valueConverted)
+                data.labelsAfterTypeCheck.append(label)
+            } else {
+                continue
+            }
+        }
+        var array = [[Any]]()
+        array.append(data.labelsAfterTypeCheck)
+        array.append(data.valuesAfterTypeCheck)
+        return array
+    }
+    
 }
