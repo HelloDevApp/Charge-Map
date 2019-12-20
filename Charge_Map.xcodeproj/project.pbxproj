@@ -135,9 +135,9 @@
 			children = (
 				521566582385DA4B000270F1 /* Main.storyboard */,
 				521566782385DF73000270F1 /* CustomAnnotation.swift */,
+				5215667A2385DFAD000270F1 /* CustomAnnotationView.swift */,
 				528A97D22397E9C90003468A /* CustomGradientView.swift */,
 				521566872389673A000270F1 /* CustomLabel.swift */,
-				5215667A2385DFAD000270F1 /* CustomAnnotationView.swift */,
 				52160DCC238EB53200BA950B /* CustomCollectionViewCell.swift */,
 			);
 			path = View;

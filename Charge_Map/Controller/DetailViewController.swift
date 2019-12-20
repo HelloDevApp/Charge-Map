@@ -75,8 +75,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         } else if labelWithoutUnderscore == "Puiss Max" {
             collectionCell.setup(messageTop: "Puissance Max", messageBottom: "\(arrayValue[indexPath.row]) kW")
         } else if labelWithoutUnderscore == "Source" {
-            indexPathCellSource = indexPath.row
-            collectionCell.customLabelBottom.textColor = #colorLiteral(red: 0.1362787382, green: 0.231095155, blue: 0.7469640544, alpha: 1)
             collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])")
         } else {
             collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])") // ligne original

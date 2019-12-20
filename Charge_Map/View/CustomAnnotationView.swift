@@ -15,7 +15,6 @@ class CustomAnnotationView: MKMarkerAnnotationView {
             if let annotation = newValue as? CustomAnnotation {
                 switch annotation.type {
                 case .free:
-//                    selectedGlyphImage = #imageLiteral(resourceName: "iconTerminal")
                     clusteringIdentifier = "free"
                     markerTintColor = #colorLiteral(red: 0.1888821515, green: 0.3201708225, blue: 0.09634789075, alpha: 1)
                 case .paid:

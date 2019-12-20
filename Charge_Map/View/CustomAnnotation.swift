@@ -20,7 +20,6 @@ class CustomAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var type: AnnotationType
     var field: Fields?
-    var numberOfCellForDetailOfField = 0
     
     init(title: String, subtitle: String, coordinate: CLLocationCoordinate2D, type: AnnotationType, field: Fields?) {
         self.title = title
