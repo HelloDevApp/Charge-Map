@@ -14,6 +14,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     let apiHelper = API_Helper()
     let datas = Datas()
+    var showDestination = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,7 @@ class MapViewController: UIViewController {
     }
     
     private func setupController() {
-        mapView.mapType = .satelliteFlyover
+        mapView.mapType = .hybridFlyover
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         let coordinateUser = CLLocationCoordinate2D(latitude: 48.0909, longitude: 2.0302)
         mapView.setRegion(MKCoordinateRegion(center: coordinateUser, latitudinalMeters: 90000, longitudinalMeters: 90000), animated: true)
@@ -68,7 +69,7 @@ class MapViewController: UIViewController {
             let fields = annotation.fields
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let paidOrFree: AnnotationType = (fields?.acces_recharge == "Gratuit" || fields?.acces_recharge == "gratuit") ? .free : .paid
-            let annotation = CustomAnnotation(title: fields?.acces_recharge ?? "" , subtitle: "ok"/*"\(fields.nbre_pdc ?? 0)"*/, coordinate: coordinate, type: paidOrFree, field: fields ?? Fields(type_prise: nil, source: nil, ad_station: nil, date_maj: nil, accessibilite: nil, n_station: nil, coordonnees: [0.0,0.0], acces_recharge: nil, nbre_pdc: nil, puiss_max: nil))
+            let annotation = CustomAnnotation(title: fields?.acces_recharge ?? "" , subtitle: "ok"/*"\(fields.nbre_pdc ?? 0)"*/, coordinate: coordinate, type: paidOrFree, field: fields ?? Fields(type_prise: nil, ad_station: nil, date_maj: nil, accessibilite: nil, n_station: nil, coordonnees: [0.0,0.0], acces_recharge: nil, nbre_pdc: nil, puiss_max: nil))
             datas.annotations.append(annotation)
             
         }
@@ -117,6 +118,7 @@ extension MapViewController: MKMapViewDelegate {
                 detailVC.fields = []
                 detailVC.fields.append(fieldAnnotationSelected)
                 detailVC.apiHelper = apiHelper
+                detailVC.annotationSelected = annotationSelected
             }
         }
     }

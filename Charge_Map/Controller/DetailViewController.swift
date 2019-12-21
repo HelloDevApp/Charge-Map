@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
 class DetailViewController: UIViewController {
     
     var fields = [Fields]()
     var apiHelper: API_Helper?
+    var annotationSelected: CustomAnnotation?
     
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -22,6 +24,35 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    @IBAction func goToDestinationAction() {
+        goToDestination(destinationCoordinate: annotationSelected!.coordinate)
+    }
+    
+    func goToDestination(destinationCoordinate: CLLocationCoordinate2D) {
+        
+        let parameters: [URLQueryItem] = [
+            URLQueryItem(name: "saddr", value: "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"),
+            URLQueryItem(name: "daddr", value: "\(48.0909),\(2.0302)"),
+            URLQueryItem(name: "dirflg", value: "d")]
+        
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "http"
+        urlComponents.host   = "maps.apple.com"
+        //        url.path   = "/saddr/records/1.0/search"
+        urlComponents.queryItems = parameters
+        
+        guard let url = urlComponents.url else { return }
+
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        else
+        {
+        UIApplication.shared.openURL(url)
+        }
+        
     }
 }
 
@@ -74,8 +105,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
             collectionCell.setup(messageTop: "Nombres Prises", messageBottom: "\(arrayValue[indexPath.row])")
         } else if labelWithoutUnderscore == "Puiss Max" {
             collectionCell.setup(messageTop: "Puissance Max", messageBottom: "\(arrayValue[indexPath.row]) kW")
-        } else if labelWithoutUnderscore == "Source" {
-            collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])")
         } else {
             collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])") // ligne original
         }

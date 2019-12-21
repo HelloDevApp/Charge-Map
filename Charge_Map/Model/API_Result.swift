@@ -22,7 +22,7 @@ struct Record: Decodable, Equatable {
 
 struct Fields: Decodable {
     let type_prise: String?
-    let source: String?
+//    let source: String?
     let ad_station: String?
     let date_maj: String?
     let accessibilite: String?
