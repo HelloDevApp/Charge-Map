@@ -12,7 +12,7 @@ import MapKit
 class DetailViewController: UIViewController {
     
     var fields = [Fields]()
-    var apiHelper: API_Helper?
+    var apiHelper: ApiHelper?
     var annotationSelected: CustomAnnotation?
     
     @IBOutlet weak var adressLabel: UILabel!
@@ -40,7 +40,6 @@ class DetailViewController: UIViewController {
         var urlComponents = URLComponents()
         urlComponents.scheme = "http"
         urlComponents.host   = "maps.apple.com"
-        //        url.path   = "/saddr/records/1.0/search"
         urlComponents.queryItems = parameters
         
         guard let url = urlComponents.url else { return }
@@ -103,6 +102,7 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return collectionCell
     }
     
+    // Allows to replace the abbreviations returned by the api with normal words and assign values to the cell
     func returnCellForRow(arrayLabel: [String], arrayValue: [String], collectionCell: CustomCollectionViewCell, indexPath: IndexPath) {
         let labelWithoutUnderscore = arrayLabel[indexPath.row].replacingOccurrences(of: "_", with: " ").capitalized
         if labelWithoutUnderscore == Word.nStation {

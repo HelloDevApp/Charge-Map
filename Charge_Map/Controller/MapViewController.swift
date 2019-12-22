@@ -12,9 +12,9 @@ import MapKit
 class MapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
-    let apiHelper = API_Helper()
+    
     let datas = Datas()
-    var showDestination = false
+    let apiHelper = ApiHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +36,8 @@ class MapViewController: UIViewController {
         performSegue(withIdentifier: Word.mapVCToTableVC, sender: nil)
         
     }
+    
+    // Setup coordinates user, mapView, launch request and display annotations
     private func setupController() {
         mapView.mapType = .hybridFlyover
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)

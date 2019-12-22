@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct API_Result: Decodable {
+struct ApiResult: Decodable {
     let nhits: Int?
     let records: [Record?]
 }
@@ -22,7 +22,6 @@ struct Record: Decodable, Equatable {
 
 struct Fields: Decodable {
     let type_prise: String?
-//    let source: String?
     let ad_station: String?
     let date_maj: String?
     let accessibilite: String?

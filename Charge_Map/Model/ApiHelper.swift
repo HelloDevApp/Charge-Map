@@ -8,7 +8,7 @@
 
 import Foundation
 
-class API_Helper {
+class ApiHelper {
     
     private var task: URLSessionDataTask?
     
@@ -33,13 +33,15 @@ class API_Helper {
         return url
     }
     
+    // method that adds a parameter to the request to retrieve only nearby annotations
     func addGeofilterUrl(latitude: String, longitude: String) {
 
         parameters.append(URLQueryItem(name: "geofilter.distance", value: "\(latitude),\(longitude),40000"))
 
     }
     
-    func getAnnotations(callback: @escaping (Bool, API_Result?) -> Void) {
+    // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
+    func getAnnotations(callback: @escaping (Bool, ApiResult?) -> Void) {
         addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
         if let url = createURL().url {
             let session = URLSession(configuration: .default)
@@ -48,7 +50,7 @@ class API_Helper {
                 guard let data = data, error == nil else { return }
                 
                 do {
-                    let json = try JSONDecoder().decode(API_Result.self, from: data)
+                    let json = try JSONDecoder().decode(ApiResult.self, from: data)
                     callback(true, json)
                 } catch {
                     callback(false, nil)
@@ -58,17 +60,18 @@ class API_Helper {
         }
     }
     
-    func removeDuplicateRecords(result: API_Result) -> [Record?] {
+    /// Allows to delete duplicates annotation returned by the api
+    func removeDuplicateRecords(result: ApiResult) -> [Record?] {
         let recordsWithoutDuplicates = result.records.removeDuplicates()
-        Datas.resultAPIObject = recordsWithoutDuplicates
+        Datas.resultAPIRecordsWithoutDuplicate = recordsWithoutDuplicates
         return recordsWithoutDuplicates
     }
     
+    /// Allows to convert the field of an annotation to return an array containing two other arrays:  one containing the name of the properties and one containing the values associated with the properties
     func convert(field: Fields) -> [[Any?]] {
         let mirror = Mirror(reflecting: field)
         let data = Datas()
-        
-        //        var test = mirror.children.map{ $0 }.filter{ ($0.value is String || $0.value is Int) }
+        // This loop allows to retrieve the name of the properties and their values to add them to the corresponding table
         for child in mirror.children {
             if let label = child.label, let value = child.value as? String {
                 data.valuesAfterTypeCheck.append(value)

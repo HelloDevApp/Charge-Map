@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Contains all the strings of the project
 class Word {
     // MARK: - Segue Identifier
     static let mapVCToTableVC = "mapVCToTableVC"
