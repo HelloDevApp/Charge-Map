@@ -21,14 +21,26 @@ class TableViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    func addGradientToView(cell: CustomTableViewCell, layer: CAGradientLayer, view: UIView, first: UIColor, second: UIColor, third: UIColor) {
+    func addGradientToView(view: UIView, even: Bool) {
         
         let gradientLayer = CAGradientLayer()
+        let lightRedColor = Datas.lightRedColor
+        let darkRedColor = Datas.darkRedColor
         
-        gradientLayer.colors = [first.cgColor, second.cgColor, third.cgColor]
+        let first = UIColor(red: CGFloat(darkRedColor.red), green: CGFloat(darkRedColor.green), blue: CGFloat(darkRedColor.blue), alpha: 1.0)
+        
+        let second = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+        
+        let third = UIColor(red: CGFloat(lightRedColor.red), green: CGFloat(lightRedColor.green), blue: CGFloat(lightRedColor.blue), alpha: 1.0)
+        
+        if even == false {
+            gradientLayer.colors = [first.cgColor, second.cgColor, third.cgColor]
+        } else {
+            gradientLayer.colors = [third.cgColor, second.cgColor, first.cgColor]
+        }
+        
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.4)
         gradientLayer.endPoint = CGPoint(x: 0.4, y: 1.0)
-        gradientLayer.frame = cell.bounds
         
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
@@ -78,13 +90,13 @@ extension TableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let annotations = datas.annotations
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Word.customCell, for: indexPath) as? CustomTableViewCell {
             fillCell(for: cell, with: annotations, indexPath: indexPath)
-            let backgroundView = cell.contentView
+            let contentView = cell.contentView
                 if indexPath.row % 2 == 0 {
-                    addGradientToView(cell: cell, layer: cell.gradient, view: backgroundView, first: #colorLiteral(red: 0.5, green: 0.1198409358, blue: 0.08705774756, alpha: 1), second: #colorLiteral(red: 0.1304242228, green: 0.1291453451, blue: 0.1290467195, alpha: 1), third: #colorLiteral(red: 0.8122976036, green: 0.1359092446, blue: 0.1255913831, alpha: 1))
+                    addGradientToView(view: contentView, even: true)
                 } else {
-                    addGradientToView(cell: cell, layer: cell.gradient, view: backgroundView, first: #colorLiteral(red: 0.8122976036, green: 0.1359092446, blue: 0.1255913831, alpha: 1), second: #colorLiteral(red: 0.1304242228, green: 0.1291453451, blue: 0.1290467195, alpha: 1), third: #colorLiteral(red: 0.5, green: 0.1198409358, blue: 0.08705774756, alpha: 1))
+                    addGradientToView(view: contentView, even: false)
                 }
                 return cell
         }

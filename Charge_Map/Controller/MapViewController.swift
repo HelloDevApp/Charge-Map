@@ -33,7 +33,7 @@ class MapViewController: UIViewController {
     
     @IBAction func showTableView(_ sender: UIButton) {
         guard !datas.annotations.isEmpty else { return }
-        performSegue(withIdentifier: "mapVCToTableVC", sender: nil)
+        performSegue(withIdentifier: Word.mapVCToTableVC, sender: nil)
         
     }
     private func setupController() {
@@ -73,7 +73,7 @@ class MapViewController: UIViewController {
             let longitude = annotation.fields?.coordonnees?.last {
             let fields = annotation.fields
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let paidOrFree: AnnotationType = (fields?.acces_recharge == "Gratuit" || fields?.acces_recharge == "gratuit") ? .free : .paid
+            let paidOrFree: AnnotationType = (fields?.acces_recharge == Word.free.capitalized || fields?.acces_recharge == Word.free) ? .free : .paid
             let annotation = CustomAnnotation(title: fields?.n_station ?? "" , subtitle: "\(fields?.accessibilite ?? "")", coordinate: coordinate, type: paidOrFree, field: fields ?? Fields(type_prise: nil, ad_station: nil, date_maj: nil, accessibilite: nil, n_station: nil, coordonnees: [0.0,0.0], acces_recharge: nil, nbre_pdc: nil, puiss_max: nil))
             datas.annotations.append(annotation)
             
@@ -103,13 +103,13 @@ extension MapViewController: MKMapViewDelegate {
             
             Datas.annotationSelected = annotation
             datas.coordinatesSelectedAnnotation = view.annotation?.coordinate
-            performSegue(withIdentifier: "mapVCToDetailVC", sender: nil)
+            performSegue(withIdentifier: Word.mapVCToDetailVC, sender: nil)
         }
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "mapVCToDetailVC",
+        if segue.identifier == Word.mapVCToDetailVC,
             let detailVC = segue.destination as? DetailViewController {
             
             if let annotationSelected = Datas.annotationSelected {
@@ -120,7 +120,7 @@ extension MapViewController: MKMapViewDelegate {
                     detailVC.annotationSelected = annotationSelected
                 }
             }
-        } else if segue.identifier == "mapVCToTableVC", let tableVC = segue.destination as? TableViewController {
+        } else if segue.identifier == Word.mapVCToTableVC, let tableVC = segue.destination as? TableViewController {
             tableVC.datas = datas
         }
     }

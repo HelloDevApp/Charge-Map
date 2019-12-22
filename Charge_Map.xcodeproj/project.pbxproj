@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520B863123AF48A0002F8DA6 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B863023AF48A0002F8DA6 /* Word.swift */; };
 		521566532385DA4B000270F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566522385DA4B000270F1 /* AppDelegate.swift */; };
 		521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566542385DA4B000270F1 /* SceneDelegate.swift */; };
 		5215665A2385DA4B000270F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 521566582385DA4B000270F1 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		520B863023AF48A0002F8DA6 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		5215664F2385DA4B000270F1 /* Charge_Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Charge_Map.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		521566522385DA4B000270F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		521566542385DA4B000270F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				5215667D2385E06E000270F1 /* API_Helper.swift */,
 				521566812385E099000270F1 /* API_Result.swift */,
 				52424823239FA4980017D848 /* Datas.swift */,
+				520B863023AF48A0002F8DA6 /* Word.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52424824239FA4980017D848 /* Datas.swift in Sources */,
+				520B863123AF48A0002F8DA6 /* Word.swift in Sources */,
 				521566532385DA4B000270F1 /* AppDelegate.swift in Sources */,
 				521566882389673A000270F1 /* CustomLabel.swift in Sources */,
 				5215667B2385DFAD000270F1 /* CustomAnnotationView.swift in Sources */,

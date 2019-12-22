@@ -66,21 +66,30 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let view = cell.contentView as? GradientView {
+            let lightRedColor = Datas.lightRedColor
+            let darkRedColor = Datas.darkRedColor
             if indexPath.row % 2 == 0 {
-                view.firstColor = #colorLiteral(red: 0.5, green: 0.1198409358, blue: 0.08705774756, alpha: 1)
-                view.secondColor = #colorLiteral(red: 0.1304242228, green: 0.1291453451, blue: 0.1290467195, alpha: 1)
-                view.thirdColor = #colorLiteral(red: 0.8122976036, green: 0.1359092446, blue: 0.1255913831, alpha: 1)
+                // 1 light
+                view.firstColor = UIColor(red: CGFloat(lightRedColor.red), green: CGFloat(lightRedColor.green), blue: CGFloat(lightRedColor.blue), alpha: 1.0)
+                // 2 black
+                view.secondColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+                // 3 dark
+                view.thirdColor = UIColor(red: CGFloat(darkRedColor.red), green: CGFloat(darkRedColor.green), blue: CGFloat(darkRedColor.blue), alpha: 1.0)
+                
             } else {
-                view.firstColor = #colorLiteral(red: 0.8122976036, green: 0.1359092446, blue: 0.1255913831, alpha: 1)
-                view.secondColor = #colorLiteral(red: 0.1304242228, green: 0.1291453451, blue: 0.1290467195, alpha: 1)
-                view.thirdColor = #colorLiteral(red: 0.5, green: 0.1198409358, blue: 0.08705774756, alpha: 1)
+                // 1 dark
+                view.firstColor = UIColor(red: CGFloat(darkRedColor.red), green: CGFloat(darkRedColor.green), blue: CGFloat(darkRedColor.blue), alpha: 1.0)
+                // 2 black
+                view.secondColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+                // 3 light
+                view.thirdColor = UIColor(red: CGFloat(lightRedColor.red), green: CGFloat(lightRedColor.green), blue: CGFloat(lightRedColor.blue), alpha: 1.0)
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as? CustomCollectionViewCell else {
+        guard let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: Word.customCell, for: indexPath) as? CustomCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -96,15 +105,15 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func returnCellForRow(arrayLabel: [String], arrayValue: [String], collectionCell: CustomCollectionViewCell, indexPath: IndexPath) {
         let labelWithoutUnderscore = arrayLabel[indexPath.row].replacingOccurrences(of: "_", with: " ").capitalized
-        if labelWithoutUnderscore == "N Station" {
-            collectionCell.setup(messageTop: "Nom Station", messageBottom: "\(arrayValue[indexPath.row])")
-        } else if labelWithoutUnderscore == "Ad Station" {
+        if labelWithoutUnderscore == Word.nStation {
+            collectionCell.setup(messageTop: Word.nameStation, messageBottom: "\(arrayValue[indexPath.row])")
+        } else if labelWithoutUnderscore == Word.adress {
             adressLabel.text = "\(arrayValue[indexPath.row].capitalized)"
-            collectionCell.setup(messageTop: "Adresse Station", messageBottom: "\(arrayValue[indexPath.row])")
-        } else if labelWithoutUnderscore == "Nbre Pdc" {
-            collectionCell.setup(messageTop: "Nombres Prises", messageBottom: "\(arrayValue[indexPath.row])")
-        } else if labelWithoutUnderscore == "Puiss Max" {
-            collectionCell.setup(messageTop: "Puissance Max", messageBottom: "\(arrayValue[indexPath.row]) kW")
+            collectionCell.setup(messageTop: Word.adressStation, messageBottom: "\(arrayValue[indexPath.row])")
+        } else if labelWithoutUnderscore == Word.numberOutlets {
+            collectionCell.setup(messageTop: Word.numberOutletsLong, messageBottom: "\(arrayValue[indexPath.row])")
+        } else if labelWithoutUnderscore == Word.powerMax {
+            collectionCell.setup(messageTop: Word.powerMaxLong, messageBottom: "\(arrayValue[indexPath.row]) \(Word.kW)")
         } else {
             collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])") // ligne original
         }
