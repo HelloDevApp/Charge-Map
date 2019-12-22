@@ -31,6 +31,11 @@ class MapViewController: UIViewController {
 //        mapView.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000), animated: true)
     }
     
+    @IBAction func showTableView(_ sender: UIButton) {
+        guard !datas.annotations.isEmpty else { return }
+        performSegue(withIdentifier: "mapVCToTableVC", sender: nil)
+        
+    }
     private func setupController() {
         mapView.mapType = .hybridFlyover
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -91,12 +96,8 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let datas = Datas()
         if let cluster = view.annotation as? MKClusterAnnotation {
-            if cluster.memberAnnotations.count == 1 {
-                datas.coordinatesSelectedAnnotation = cluster.coordinate
-                mapView.showAnnotations(cluster.memberAnnotations, animated: true)
-                performSegue(withIdentifier: "mapVCToDetailVC", sender: nil)
-            }
             mapView.showAnnotations(cluster.memberAnnotations, animated: true)
+            
         } else {
             guard let annotation = view.annotation as? CustomAnnotation else { return }
             
@@ -108,18 +109,19 @@ extension MapViewController: MKMapViewDelegate {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "mapVCToDetailVC",
-            let detailVC = segue.destination as? DetailViewController else {
-                return
-        }
-        
-        if let annotationSelected = Datas.annotationSelected {
-            if let fieldAnnotationSelected = annotationSelected.field {
-                detailVC.fields = []
-                detailVC.fields.append(fieldAnnotationSelected)
-                detailVC.apiHelper = apiHelper
-                detailVC.annotationSelected = annotationSelected
+        if segue.identifier == "mapVCToDetailVC",
+            let detailVC = segue.destination as? DetailViewController {
+            
+            if let annotationSelected = Datas.annotationSelected {
+                if let fieldAnnotationSelected = annotationSelected.field {
+                    detailVC.fields = []
+                    detailVC.fields.append(fieldAnnotationSelected)
+                    detailVC.apiHelper = apiHelper
+                    detailVC.annotationSelected = annotationSelected
+                }
             }
+        } else if segue.identifier == "mapVCToTableVC", let tableVC = segue.destination as? TableViewController {
+            tableVC.datas = datas
         }
     }
 }

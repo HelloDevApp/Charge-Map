@@ -21,6 +21,8 @@
 		52156686238630E3000270F1 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52156685238630E3000270F1 /* DetailViewController.swift */; };
 		521566882389673A000270F1 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521566872389673A000270F1 /* CustomLabel.swift */; };
 		52160DCD238EB53200BA950B /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52160DCC238EB53200BA950B /* CustomCollectionViewCell.swift */; };
+		5224C87E23AEBDBA001D1B34 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5224C87D23AEBDBA001D1B34 /* CustomTableViewCell.swift */; };
+		5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5224C87F23AECBD5001D1B34 /* TableViewController.swift */; };
 		52424824239FA4980017D848 /* Datas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52424823239FA4980017D848 /* Datas.swift */; };
 		5264B0F2238C232300394A98 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264B0F1238C232300394A98 /* ArrayExtension.swift */; };
 		528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A97D22397E9C90003468A /* CustomGradientView.swift */; };
@@ -55,6 +57,8 @@
 		52156685238630E3000270F1 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		521566872389673A000270F1 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		52160DCC238EB53200BA950B /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		5224C87D23AEBDBA001D1B34 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		5224C87F23AECBD5001D1B34 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		52424823239FA4980017D848 /* Datas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datas.swift; sourceTree = "<group>"; };
 		5264B0F1238C232300394A98 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		528A97D22397E9C90003468A /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 			children = (
 				521566742385DD34000270F1 /* MapViewController.swift */,
 				52156685238630E3000270F1 /* DetailViewController.swift */,
+				5224C87F23AECBD5001D1B34 /* TableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -139,6 +144,7 @@
 				528A97D22397E9C90003468A /* CustomGradientView.swift */,
 				521566872389673A000270F1 /* CustomLabel.swift */,
 				52160DCC238EB53200BA950B /* CustomCollectionViewCell.swift */,
+				5224C87D23AEBDBA001D1B34 /* CustomTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -267,6 +273,7 @@
 				521566882389673A000270F1 /* CustomLabel.swift in Sources */,
 				5215667B2385DFAD000270F1 /* CustomAnnotationView.swift in Sources */,
 				528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */,
+				5224C87E23AEBDBA001D1B34 /* CustomTableViewCell.swift in Sources */,
 				5215667E2385E06E000270F1 /* API_Helper.swift in Sources */,
 				521566822385E099000270F1 /* API_Result.swift in Sources */,
 				5264B0F2238C232300394A98 /* ArrayExtension.swift in Sources */,
@@ -274,6 +281,7 @@
 				521566752385DD34000270F1 /* MapViewController.swift in Sources */,
 				521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */,
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
+				5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */,
 				52156686238630E3000270F1 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
