@@ -74,7 +74,7 @@ class MapViewController: UIViewController {
             let fields = annotation.fields
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let paidOrFree: AnnotationType = (fields?.acces_recharge == "Gratuit" || fields?.acces_recharge == "gratuit") ? .free : .paid
-            let annotation = CustomAnnotation(title: fields?.acces_recharge ?? "" , subtitle: "ok"/*"\(fields.nbre_pdc ?? 0)"*/, coordinate: coordinate, type: paidOrFree, field: fields ?? Fields(type_prise: nil, ad_station: nil, date_maj: nil, accessibilite: nil, n_station: nil, coordonnees: [0.0,0.0], acces_recharge: nil, nbre_pdc: nil, puiss_max: nil))
+            let annotation = CustomAnnotation(title: fields?.n_station ?? "" , subtitle: "\(fields?.accessibilite ?? "")", coordinate: coordinate, type: paidOrFree, field: fields ?? Fields(type_prise: nil, ad_station: nil, date_maj: nil, accessibilite: nil, n_station: nil, coordonnees: [0.0,0.0], acces_recharge: nil, nbre_pdc: nil, puiss_max: nil))
             datas.annotations.append(annotation)
             
         }

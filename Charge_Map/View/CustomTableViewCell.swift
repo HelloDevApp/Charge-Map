@@ -46,7 +46,7 @@ class CustomTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if let gradient = contentView.layer.sublayers?[0] as? CAGradientLayer {
-            gradient.frame = CGRect(x: 0, y: stackView.frame.minY - 5, width: bounds.width, height: bounds.height)
+            gradient.frame = CGRect(x: 0, y: stackView.frame.minY - 10, width: bounds.width, height: bounds.height)
         }
     }
 }
