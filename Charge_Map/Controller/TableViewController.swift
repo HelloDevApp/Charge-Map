@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class TableViewController: UIViewController {
  
@@ -53,10 +54,10 @@ extension TableViewController: UITableViewDataSource {
     
     func fillCell(for cell: CustomTableViewCell, with annotations: [CustomAnnotation], indexPath: IndexPath) {
         let annotation = annotations[indexPath.row]
-        fillTextLabel(field: annotation.field, cell: cell)
+        fillTextLabel(field: annotation.field, cell: cell, indexPath: indexPath)
     }
     
-    func fillTextLabel(field: Fields?, cell: CustomTableViewCell) {
+    func fillTextLabel(field: Fields?, cell: CustomTableViewCell, indexPath: IndexPath) {
         
         if let field = field {
             if let powerMax = field.puiss_max {
@@ -77,7 +78,13 @@ extension TableViewController: UITableViewDataSource {
             if let terminalNameStation = field.n_station {
                 cell.terminalNameLabel.text = "\(terminalNameStation)"
             }
-            cell.distanceLabel.text = "Valeur non correct"
+            let coordinateUser = Datas.coordinateUser
+            let coordinateTerminal = annotationManager.annotations[indexPath.row].coordinate
+            let locationUser = CLLocation(latitude: coordinateUser.latitude, longitude: coordinateUser.longitude)
+            let locationTerminal = CLLocation(latitude: coordinateTerminal.latitude, longitude: coordinateTerminal.longitude)
+            cell.distanceLabel.text = String(format: "%.01f", locationUser.distance(from: locationTerminal) / 1000)
+            cell.distanceLabel.text?.append("km")
+            
         }
     }
 }

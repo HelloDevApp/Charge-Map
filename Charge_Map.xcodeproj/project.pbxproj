@@ -67,6 +67,7 @@
 		5264B0F1238C232300394A98 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		528A97D22397E9C90003468A /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
+		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52F2480C23B0194200B1DE0A /* AnnotationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				5215667D2385E06E000270F1 /* ApiHelper.swift */,
+				52C400DF23B08F30003BE3BF /* Location.gpx */,
 				52F2480C23B0194200B1DE0A /* AnnotationManager.swift */,
 				521566812385E099000270F1 /* ApiResult.swift */,
 				52424823239FA4980017D848 /* Datas.swift */,

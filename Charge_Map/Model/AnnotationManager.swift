@@ -46,7 +46,7 @@ class AnnotationManager {
     func returnUrlRedirection(destinationCoordinate: CLLocationCoordinate2D) -> URL? {
         let parameters: [URLQueryItem] = [
             URLQueryItem(name: "saddr", value: "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"),
-            URLQueryItem(name: "daddr", value: "\(datas.coordinateUser.latitude),\(datas.coordinateUser.longitude)"),
+            URLQueryItem(name: "daddr", value: "\(Datas.coordinateUser.latitude),\(Datas.coordinateUser.longitude)"),
             URLQueryItem(name: "dirflg", value: "d")]
         
         var urlComponents = URLComponents()

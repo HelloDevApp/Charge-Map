@@ -14,7 +14,9 @@ class Datas {
     static var startPointGradient = CGPoint(x: 0.0, y: 0.4)
     static var endPointGradient = CGPoint(x: 0.4, y: 1.0)
     
-    let coordinateUser = CLLocationCoordinate2D(latitude: 48.0909, longitude: 2.0302)
+    
+    // CLLocationCoordinate2D(latitude: 48.0909, longitude: 2.0302)
+    static var coordinateUser =  CLLocationCoordinate2D()
     var setRegionMeters = (latitude: CLLocationDistance(90000), longitude: CLLocationDistance(90000))
     let alpha: CGFloat = 1.0
     var cornerRadius: CGFloat = 0

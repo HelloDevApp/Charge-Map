@@ -32,7 +32,7 @@ class ApiHelper: UrlEncoder {
     
     // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
     func getAnnotations(callback: @escaping (Bool, ApiResult?) -> Void) {
-        addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
+//        addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
         if let urlBase = createUrlBase(scheme: self.scheme, host: self.host, path: self.path),
             let url = encode(urlBase: urlBase, parameters: parameters) {
             
