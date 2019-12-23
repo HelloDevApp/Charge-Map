@@ -31,25 +31,25 @@ class GradientView: UIView {
         }
     }
 
-    var startPointX: CGFloat = 0 {
+    var startPointX: CGFloat = Datas.startPointGradient.x {
         didSet {
             setNeedsLayout()
         }
     }
 
-    var endPointX: CGFloat = 0.4 {
+    var endPointX: CGFloat = Datas.endPointGradient.x {
         didSet {
             setNeedsLayout()
         }
     }
 
-    var startPointY: CGFloat = 0.4 {
+    var startPointY: CGFloat = Datas.startPointGradient.y {
         didSet {
             setNeedsLayout()
         }
     }
 
-    var endPointY: CGFloat = 1 {
+    var endPointY: CGFloat = Datas.endPointGradient.y {
         didSet {
             setNeedsLayout()
         }

@@ -28,4 +28,7 @@ class Word {
     static let powerMaxLong = "Puissance Max"
     static let kW = "kW"
     static let free = "gratuit"
+    
+    // MARK: Others
+    static let empty = ""
 }

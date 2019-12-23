@@ -35,9 +35,7 @@ class ApiHelper {
     
     // method that adds a parameter to the request to retrieve only nearby annotations
     func addGeofilterUrl(latitude: String, longitude: String) {
-
         parameters.append(URLQueryItem(name: "geofilter.distance", value: "\(latitude),\(longitude),40000"))
-
     }
     
     // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
@@ -61,36 +59,37 @@ class ApiHelper {
     }
     
     /// Allows to delete duplicates annotation returned by the api
-    func removeDuplicateRecords(result: ApiResult) -> [Record?] {
+    func removeDuplicateRecords(result: ApiResult, annotationManager: AnnotationManager) -> [Record?] {
         let recordsWithoutDuplicates = result.records.removeDuplicates()
-        Datas.resultAPIRecordsWithoutDuplicate = recordsWithoutDuplicates
+        annotationManager.apiAnnotationWithoutDuplicates = recordsWithoutDuplicates
         return recordsWithoutDuplicates
     }
     
     /// Allows to convert the field of an annotation to return an array containing two other arrays:  one containing the name of the properties and one containing the values associated with the properties
-    func convert(field: Fields) -> [[Any?]] {
+    func convert(field: Fields, annotationManager: AnnotationManager) -> [[Any?]] {
         let mirror = Mirror(reflecting: field)
-        let data = Datas()
+        annotationManager.labelsFieldAfterConvert.removeAll()
+        annotationManager.valuesFieldAfterConvert.removeAll()
         // This loop allows to retrieve the name of the properties and their values to add them to the corresponding table
         for child in mirror.children {
             if let label = child.label, let value = child.value as? String {
-                data.valuesAfterTypeCheck.append(value)
-                data.labelsAfterTypeCheck.append(label)
+                annotationManager.valuesFieldAfterConvert.append(value)
+                annotationManager.labelsFieldAfterConvert.append(label)
             } else if let label = child.label, let value = child.value as? Int {
                 let valueConverted = String(value)
-                data.valuesAfterTypeCheck.append(valueConverted)
-                data.labelsAfterTypeCheck.append(label)
+                annotationManager.valuesFieldAfterConvert.append(valueConverted)
+                annotationManager.labelsFieldAfterConvert.append(label)
             } else if let label = child.label, let value = child.value as? Double {
                 let valueConverted = String(value)
-                data.valuesAfterTypeCheck.append(valueConverted)
-                data.labelsAfterTypeCheck.append(label)
+                annotationManager.valuesFieldAfterConvert.append(valueConverted)
+                annotationManager.labelsFieldAfterConvert.append(label)
             } else {
                 continue
             }
         }
         var array = [[Any]]()
-        array.append(data.labelsAfterTypeCheck)
-        array.append(data.valuesAfterTypeCheck)
+        array.append(annotationManager.labelsFieldAfterConvert)
+        array.append(annotationManager.valuesFieldAfterConvert)
         return array
     }
     

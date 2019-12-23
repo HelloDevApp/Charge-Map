@@ -11,9 +11,10 @@ import MapKit
 
 class DetailViewController: UIViewController {
     
+    // This array is required to scan the fields and automate the assignment of values to the label in the cells.
     var fields = [Fields]()
     var apiHelper: ApiHelper?
-    var annotationSelected: CustomAnnotation?
+    var annotationManager: AnnotationManager!
     
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -26,32 +27,20 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    @IBAction func goToDestinationAction() {
-        goToDestination(destinationCoordinate: annotationSelected!.coordinate)
+    @IBAction func goToMapsAppAction() {
+        guard let annotationSelected = annotationManager.annotationSelected else { return }
+        goToMapsApp(destinationCoordinate: annotationSelected.coordinate)
     }
     
-    func goToDestination(destinationCoordinate: CLLocationCoordinate2D) {
+    func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
         
-        let parameters: [URLQueryItem] = [
-            URLQueryItem(name: "saddr", value: "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"),
-            URLQueryItem(name: "daddr", value: "\(48.0909),\(2.0302)"),
-            URLQueryItem(name: "dirflg", value: "d")]
+        guard let url = annotationManager.returnUrlRedirection(destinationCoordinate: destinationCoordinate) else { return }
         
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "http"
-        urlComponents.host   = "maps.apple.com"
-        urlComponents.queryItems = parameters
-        
-        guard let url = urlComponents.url else { return }
-
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
         }
-        else
-        {
-        UIApplication.shared.openURL(url)
-        }
-        
     }
 }
 
@@ -63,25 +52,31 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         fields[0].countProperties()
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = collectionView.frame.width / 1.1
+        let height = collectionView.frame.height / 3.45
+        
+        let size = CGSize(width: width, height: height)
+        return size
+    }
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let view = cell.contentView as? GradientView {
-            let lightRedColor = Datas.lightRedColor
-            let darkRedColor = Datas.darkRedColor
-            if indexPath.row % 2 == 0 {
-                // 1 light
-                view.firstColor = UIColor(red: CGFloat(lightRedColor.red), green: CGFloat(lightRedColor.green), blue: CGFloat(lightRedColor.blue), alpha: 1.0)
-                // 2 black
-                view.secondColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
-                // 3 dark
-                view.thirdColor = UIColor(red: CGFloat(darkRedColor.red), green: CGFloat(darkRedColor.green), blue: CGFloat(darkRedColor.blue), alpha: 1.0)
+            let datas = Datas()
+            let light = datas.lightRedColor
+            let dark = datas.darkRedColor
+            if indexPath.row % 2 == .zero {
+                // 1 light, 2 black, 3 dark
+                view.firstColor = UIColor(red: CGFloat(light.red), green: CGFloat(light.green), blue: CGFloat(light.blue), alpha: datas.alpha)
+                view.secondColor = UIColor(red: .zero, green: .zero, blue: .zero, alpha: datas.alpha)
+                view.thirdColor = UIColor(red: CGFloat(dark.red), green: CGFloat(dark.green), blue: CGFloat(dark.blue), alpha: datas.alpha)
                 
             } else {
-                // 1 dark
-                view.firstColor = UIColor(red: CGFloat(darkRedColor.red), green: CGFloat(darkRedColor.green), blue: CGFloat(darkRedColor.blue), alpha: 1.0)
-                // 2 black
-                view.secondColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
-                // 3 light
-                view.thirdColor = UIColor(red: CGFloat(lightRedColor.red), green: CGFloat(lightRedColor.green), blue: CGFloat(lightRedColor.blue), alpha: 1.0)
+                // 1 dark , 2 black , 3 light
+                view.firstColor = UIColor(red: CGFloat(dark.red), green: CGFloat(dark.green), blue: CGFloat(dark.blue), alpha: datas.alpha)
+                view.secondColor = UIColor(red: .zero, green: .zero, blue: .zero, alpha: datas.alpha)
+                view.thirdColor = UIColor(red: CGFloat(light.red), green: CGFloat(light.green), blue: CGFloat(light.blue), alpha: datas.alpha)
             }
         }
     }
@@ -94,7 +89,7 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         guard let apiHelper = apiHelper else { return collectionCell }
         
-        let arrayResult = apiHelper.convert(field: fields[0])
+        let arrayResult = apiHelper.convert(field: fields[0], annotationManager: annotationManager)
         guard let arrayLabel = arrayResult[0] as? [String], let arrayValue = arrayResult[1] as? [String] else { return collectionCell }
         
         returnCellForRow(arrayLabel: arrayLabel, arrayValue: arrayValue, collectionCell: collectionCell, indexPath: indexPath)
@@ -105,26 +100,18 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     // Allows to replace the abbreviations returned by the api with normal words and assign values to the cell
     func returnCellForRow(arrayLabel: [String], arrayValue: [String], collectionCell: CustomCollectionViewCell, indexPath: IndexPath) {
         let labelWithoutUnderscore = arrayLabel[indexPath.row].replacingOccurrences(of: "_", with: " ").capitalized
+        let value = "\(arrayValue[indexPath.row])"
         if labelWithoutUnderscore == Word.nStation {
-            collectionCell.setup(messageTop: Word.nameStation, messageBottom: "\(arrayValue[indexPath.row])")
+            collectionCell.setup(messageTop: Word.nameStation, messageBottom: value)
         } else if labelWithoutUnderscore == Word.adress {
-            adressLabel.text = "\(arrayValue[indexPath.row].capitalized)"
-            collectionCell.setup(messageTop: Word.adressStation, messageBottom: "\(arrayValue[indexPath.row])")
+            adressLabel.text = value.capitalized
+            collectionCell.setup(messageTop: Word.adressStation, messageBottom: value)
         } else if labelWithoutUnderscore == Word.numberOutlets {
-            collectionCell.setup(messageTop: Word.numberOutletsLong, messageBottom: "\(arrayValue[indexPath.row])")
+            collectionCell.setup(messageTop: Word.numberOutletsLong, messageBottom: value)
         } else if labelWithoutUnderscore == Word.powerMax {
-            collectionCell.setup(messageTop: Word.powerMaxLong, messageBottom: "\(arrayValue[indexPath.row]) \(Word.kW)")
+            collectionCell.setup(messageTop: Word.powerMaxLong, messageBottom: value + Word.kW)
         } else {
-            collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: "\(arrayValue[indexPath.row])") // ligne original
+            collectionCell.setup(messageTop: "\(labelWithoutUnderscore)", messageBottom: value)
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let width = collectionView.frame.width / 1.1
-        let height = collectionView.frame.height / 3.45
-        
-        let size = CGSize(width: width, height: height)
-        return size
     }
 }
