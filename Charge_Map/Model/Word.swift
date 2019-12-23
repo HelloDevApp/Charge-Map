@@ -31,4 +31,20 @@ class Word {
     
     // MARK: Others
     static let empty = ""
+    
+    // MARK: URL / PARAMETERS
+    static let https = "https"
+    static let host = "public.opendatasoft.com"
+    static let path = "/api/records/1.0/search"
+    
+    // Parameters Name
+    static let dataset = ("dataset", "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve")
+    static let lang = ("lang", "fr")
+    static let rows = ("rows", "1000")
+    static let numberOutletsFacet = ("facet", "nbre_pdc")
+    static let powerFacet = ("facet", "puiss_max")
+    static let accessibilityFacet = ("facet", "accessibilite")
+    static let nameStationFacet = ("facet", "n_station")
+    static let geofilterDistance = "geofilter.distance"
+    
 }

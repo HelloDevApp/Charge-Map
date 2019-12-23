@@ -8,40 +8,34 @@
 
 import Foundation
 
-class ApiHelper {
+class ApiHelper: UrlEncoder {
+    
+    var scheme: String = Word.https
+    var host: String = Word.host
+    var path: String = Word.path
     
     private var task: URLSessionDataTask?
     
-    var parameters: [URLQueryItem] = [
-    URLQueryItem(name: "dataset", value: "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve"),
-    URLQueryItem(name: "lang", value: "fr"),
-    URLQueryItem(name: "rows", value: "10000"),
-    URLQueryItem(name: "facet", value: "nbre_pdc"),
-    URLQueryItem(name: "facet", value: "puiss_max"),
-    URLQueryItem(name: "facet", value: "accessibilite"),
-    URLQueryItem(name: "facet", value: "n_station"),
-    ]
-    
-    private func createURL() -> URLComponents {
-        
-        var url = URLComponents()
-        url.scheme = "https"
-        url.host   = "public.opendatasoft.com"
-        url.path   = "/api/records/1.0/search"
-        url.queryItems = parameters
-        
-        return url
-    }
+    var parameters: [(key: String, value: String)] =
+        [(Word.dataset.0, Word.dataset.1),
+         (Word.lang.0 , Word.lang.1),
+         (Word.rows.0 , Word.rows.1),
+         (Word.numberOutletsFacet.0, Word.numberOutletsFacet.1),
+         (Word.powerFacet.0, Word.powerFacet.1),
+         (Word.accessibilityFacet.0, Word.accessibilityFacet.1),
+         (Word.nameStationFacet.0, Word.nameStationFacet.1)]
     
     // method that adds a parameter to the request to retrieve only nearby annotations
     func addGeofilterUrl(latitude: String, longitude: String) {
-        parameters.append(URLQueryItem(name: "geofilter.distance", value: "\(latitude),\(longitude),40000"))
+        parameters.append((key: Word.geofilterDistance, value: "\(latitude),\(longitude),50000"))
     }
     
     // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
     func getAnnotations(callback: @escaping (Bool, ApiResult?) -> Void) {
         addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
-        if let url = createURL().url {
+        if let urlBase = createUrlBase(scheme: self.scheme, host: self.host, path: self.path),
+            let url = encode(urlBase: urlBase, parameters: parameters) {
+            
             let session = URLSession(configuration: .default)
             
             let task = session.dataTask(with: url) { (data, response, error) in
