@@ -26,7 +26,9 @@
 		5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5224C87F23AECBD5001D1B34 /* TableViewController.swift */; };
 		52424824239FA4980017D848 /* Datas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52424823239FA4980017D848 /* Datas.swift */; };
 		5264B0F2238C232300394A98 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264B0F1238C232300394A98 /* ArrayExtension.swift */; };
+		52656AB923B43B940013C028 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52656AB823B43B940013C028 /* SettingViewController.swift */; };
 		528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A97D22397E9C90003468A /* CustomGradientView.swift */; };
+		52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8323B57507003E5026 /* SettingsDelegate.swift */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
 		52F2480D23B0194200B1DE0A /* AnnotationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F2480C23B0194200B1DE0A /* AnnotationManager.swift */; };
 /* End PBXBuildFile section */
@@ -65,7 +67,9 @@
 		5224C87F23AECBD5001D1B34 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		52424823239FA4980017D848 /* Datas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datas.swift; sourceTree = "<group>"; };
 		5264B0F1238C232300394A98 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		52656AB823B43B940013C028 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		528A97D22397E9C90003468A /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
+		52912E8323B57507003E5026 /* SettingsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDelegate.swift; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52F2480C23B0194200B1DE0A /* AnnotationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationManager.swift; sourceTree = "<group>"; };
@@ -135,9 +139,11 @@
 		521566762385DE15000270F1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				52912E8323B57507003E5026 /* SettingsDelegate.swift */,
 				521566742385DD34000270F1 /* MapViewController.swift */,
 				52156685238630E3000270F1 /* DetailViewController.swift */,
 				5224C87F23AECBD5001D1B34 /* TableViewController.swift */,
+				52656AB823B43B940013C028 /* SettingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -292,9 +298,11 @@
 				521566822385E099000270F1 /* ApiResult.swift in Sources */,
 				5264B0F2238C232300394A98 /* ArrayExtension.swift in Sources */,
 				52160DCD238EB53200BA950B /* CustomCollectionViewCell.swift in Sources */,
+				52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */,
 				521566752385DD34000270F1 /* MapViewController.swift in Sources */,
 				521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */,
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
+				52656AB923B43B940013C028 /* SettingViewController.swift in Sources */,
 				5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */,
 				52156686238630E3000270F1 /* DetailViewController.swift in Sources */,
 			);

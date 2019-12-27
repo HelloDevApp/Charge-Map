@@ -9,22 +9,31 @@
 import UIKit
 import MapKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, SettingsDelegate {
     
     // This array is required to scan the fields and automate the assignment of values to the label in the cells.
     var fields = [Fields]()
     var apiHelper: ApiHelper?
     var annotationManager: AnnotationManager!
     
+    
+    @IBOutlet var gradientView: GradientView!
+    
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewWillAppear(_ animated: Bool) {
+        let theme = checkThemeColor(theme: Datas.choosenTheme)
+        navigationController?.navigationBar.barTintColor = theme.firstColor
         navigationController?.navigationBar.isHidden = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let view = view as? GradientView {
+            applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
+        }
+        
     }
     
     @IBAction func goToMapsAppAction() {
@@ -62,21 +71,13 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
         if let view = cell.contentView as? GradientView {
-            let datas = Datas()
-            let light = datas.lightRedColor
-            let dark = datas.darkRedColor
             if indexPath.row % 2 == .zero {
-                // 1 light, 2 black, 3 dark
-                view.firstColor = UIColor(red: CGFloat(light.red), green: CGFloat(light.green), blue: CGFloat(light.blue), alpha: datas.alpha)
-                view.secondColor = UIColor(red: .zero, green: .zero, blue: .zero, alpha: datas.alpha)
-                view.thirdColor = UIColor(red: CGFloat(dark.red), green: CGFloat(dark.green), blue: CGFloat(dark.blue), alpha: datas.alpha)
+                applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
                 
             } else {
-                // 1 dark , 2 black , 3 light
-                view.firstColor = UIColor(red: CGFloat(dark.red), green: CGFloat(dark.green), blue: CGFloat(dark.blue), alpha: datas.alpha)
-                view.secondColor = UIColor(red: .zero, green: .zero, blue: .zero, alpha: datas.alpha)
-                view.thirdColor = UIColor(red: CGFloat(light.red), green: CGFloat(light.green), blue: CGFloat(light.blue), alpha: datas.alpha)
+                applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: true)
             }
         }
     }

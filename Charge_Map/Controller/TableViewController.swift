@@ -42,9 +42,9 @@ extension TableViewController: UITableViewDataSource {
             fillCell(for: cell, with: annotations, indexPath: indexPath)
             
             if indexPath.row % 2 == 0 {
-                addGradientToView(view: contentView, even: true)
+                addGradientToView(theme: Datas.choosenTheme, view: contentView, even: true)
             } else {
-                addGradientToView(view: contentView, even: false)
+                addGradientToView(theme: Datas.choosenTheme, view: contentView, even: false)
             }
             
             return cell
@@ -91,19 +91,16 @@ extension TableViewController: UITableViewDataSource {
 
 
 // MARK: - GradientView
-extension TableViewController {
+extension TableViewController: SettingsDelegate {
     
-    func addGradientToView(view: UIView, even: Bool) {
+    func addGradientToView(theme: Theme, view: UIView, even: Bool) {
         
         let gradientLayer = CAGradientLayer()
-        let datas = Datas()
-        let light = datas.lightRedColor
-        let dark = datas.darkRedColor
         
-        
-        let first = UIColor(red: CGFloat(dark.red), green: CGFloat(dark.green), blue: CGFloat(dark.blue), alpha: datas.alpha)
-        let second = UIColor(red: .zero, green: .zero, blue: .zero, alpha: datas.alpha)
-        let third = UIColor(red: CGFloat(light.red), green: CGFloat(light.green), blue: CGFloat(light.blue), alpha: datas.alpha)
+        let theme = checkThemeColor(theme: theme)
+        let first = theme.firstColor
+        let second = theme.secondColor
+        let third = theme.thirdColor
         
         if even == false {
             gradientLayer.colors = [first.cgColor, second.cgColor, third.cgColor]

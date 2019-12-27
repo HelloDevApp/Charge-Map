@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, SettingsDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -24,6 +24,8 @@ class MapViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let theme = checkThemeColor(theme: Datas.choosenTheme)
+        navigationController?.navigationBar.tintColor = theme.firstColor
         navigationController?.navigationBar.isHidden = true
     }
     
@@ -31,6 +33,10 @@ class MapViewController: UIViewController {
 //        guard let coordinate = coordinatesSelectedAnnotation else { return }
 //        mapView.setRegion(MKCoordinateRegion(center: Datas.coordinateUser, latitudinalMeters: 2000, longitudinalMeters: 2000), animated: true)
 //        mapView.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000), animated: true)
+    }
+    
+    @IBAction func showSettingViewController(_ sender: UIButton) {
+        performSegue(withIdentifier: "mapVCToSettingVC", sender: nil)
     }
     
     @IBAction func showTableView(_ sender: UIButton) {
@@ -133,6 +139,9 @@ extension MapViewController: MKMapViewDelegate {
             }
         } else if segue.identifier == Word.mapVCToTableVC, let tableVC = segue.destination as? TableViewController {
             tableVC.annotationManager = annotationManager
+        } else if segue.identifier == "mapVCToSettingVC", let settingVC = segue.destination as? SettingViewController {
+            
+            print("la page de reglage a été chargé.")
         }
     }
 }
