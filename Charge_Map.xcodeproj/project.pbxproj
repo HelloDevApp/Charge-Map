@@ -29,6 +29,7 @@
 		52656AB923B43B940013C028 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52656AB823B43B940013C028 /* SettingViewController.swift */; };
 		528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A97D22397E9C90003468A /* CustomGradientView.swift */; };
 		52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8323B57507003E5026 /* SettingsDelegate.swift */; };
+		52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
 		52F2480D23B0194200B1DE0A /* AnnotationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F2480C23B0194200B1DE0A /* AnnotationManager.swift */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,7 @@
 		52656AB823B43B940013C028 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		528A97D22397E9C90003468A /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
 		52912E8323B57507003E5026 /* SettingsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDelegate.swift; sourceTree = "<group>"; };
+		52912E8A23B79E68003E5026 /* Charge_Map.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Charge_Map.xcdatamodel; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52F2480C23B0194200B1DE0A /* AnnotationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationManager.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				52424823239FA4980017D848 /* Datas.swift */,
 				520B863023AF48A0002F8DA6 /* Word.swift */,
 				52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */,
+				52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
 				52656AB923B43B940013C028 /* SettingViewController.swift in Sources */,
 				5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */,
+				52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */,
 				52156686238630E3000270F1 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -573,6 +577,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				52912E8A23B79E68003E5026 /* Charge_Map.xcdatamodel */,
+			);
+			currentVersion = 52912E8A23B79E68003E5026 /* Charge_Map.xcdatamodel */;
+			path = Charge_Map.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 521566472385DA4B000270F1 /* Project object */;
 }
