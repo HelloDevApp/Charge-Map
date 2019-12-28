@@ -30,6 +30,7 @@
 		528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A97D22397E9C90003468A /* CustomGradientView.swift */; };
 		52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8323B57507003E5026 /* SettingsDelegate.swift */; };
 		52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */; };
+		52912E8D23B7A68F003E5026 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8C23B7A68F003E5026 /* Station.swift */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
 		52F2480D23B0194200B1DE0A /* AnnotationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F2480C23B0194200B1DE0A /* AnnotationManager.swift */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,7 @@
 		528A97D22397E9C90003468A /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
 		52912E8323B57507003E5026 /* SettingsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDelegate.swift; sourceTree = "<group>"; };
 		52912E8A23B79E68003E5026 /* Charge_Map.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Charge_Map.xcdatamodel; sourceTree = "<group>"; };
+		52912E8C23B7A68F003E5026 /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52F2480C23B0194200B1DE0A /* AnnotationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationManager.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				520B863023AF48A0002F8DA6 /* Word.swift */,
 				52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */,
 				52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */,
+				52912E8C23B7A68F003E5026 /* Station.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				521566882389673A000270F1 /* CustomLabel.swift in Sources */,
 				5215667B2385DFAD000270F1 /* CustomAnnotationView.swift in Sources */,
 				528A97D32397E9C90003468A /* CustomGradientView.swift in Sources */,
+				52912E8D23B7A68F003E5026 /* Station.swift in Sources */,
 				5224C87E23AEBDBA001D1B34 /* CustomTableViewCell.swift in Sources */,
 				5215667E2385E06E000270F1 /* ApiHelper.swift in Sources */,
 				521566822385E099000270F1 /* ApiResult.swift in Sources */,
