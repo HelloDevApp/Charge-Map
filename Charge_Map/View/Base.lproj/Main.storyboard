@@ -217,7 +217,7 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJx-Fl-D9s">
-                                <rect key="frame" x="262" y="98" width="142" height="32"/>
+                                <rect key="frame" x="320" y="98" width="74" height="32"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="16"/>
                                 <state key="normal" title="Listes">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
@@ -227,11 +227,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2b-Li-2PG">
-                                <rect key="frame" x="20" y="108" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="Q2b-Li-2PG" secondAttribute="height" multiplier="23:15" id="Vvd-41-WUi"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="20" y="98" width="74" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="16"/>
+                                <state key="normal" title="Réglages">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="showSettingViewController:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Kj-cK-Vox"/>
                                 </connections>
@@ -240,14 +240,15 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="SNS-cr-bqb" secondAttribute="bottom" id="0xh-1C-o2i"/>
+                            <constraint firstItem="Q2b-Li-2PG" firstAttribute="width" secondItem="oJx-Fl-D9s" secondAttribute="width" id="5aj-KC-Yvg"/>
                             <constraint firstItem="Q2b-Li-2PG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="7t9-et-yYi"/>
+                            <constraint firstItem="oJx-Fl-D9s" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Q2b-Li-2PG" secondAttribute="trailing" constant="8" symbolic="YES" id="IOR-4K-VIx"/>
                             <constraint firstItem="SNS-cr-bqb" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="LNO-y8-SWg"/>
                             <constraint firstItem="SNS-cr-bqb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="UBB-Fq-wBD"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="oJx-Fl-D9s" secondAttribute="trailing" constant="10" id="dm6-p9-qoK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="oJx-Fl-D9s" secondAttribute="trailing" constant="20" id="dm6-p9-qoK"/>
                             <constraint firstItem="oJx-Fl-D9s" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="hHk-M3-wpI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="SNS-cr-bqb" secondAttribute="trailing" id="oZH-uc-d08"/>
-                            <constraint firstItem="Q2b-Li-2PG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="yHW-vX-OQb"/>
-                            <constraint firstItem="oJx-Fl-D9s" firstAttribute="leading" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="262" id="yfB-Ak-KDU"/>
+                            <constraint firstItem="Q2b-Li-2PG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="yHW-vX-OQb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
