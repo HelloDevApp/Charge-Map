@@ -29,12 +29,6 @@ class MapViewController: UIViewController, SettingsDelegate {
         navigationController?.navigationBar.isHidden = true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-//        guard let coordinate = coordinatesSelectedAnnotation else { return }
-//        mapView.setRegion(MKCoordinateRegion(center: Datas.coordinateUser, latitudinalMeters: 2000, longitudinalMeters: 2000), animated: true)
-//        mapView.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000), animated: true)
-    }
-    
     @IBAction func showSettingViewController(_ sender: UIButton) {
         performSegue(withIdentifier: "mapVCToSettingVC", sender: nil)
     }
@@ -149,7 +143,7 @@ extension MapViewController: MKMapViewDelegate {
 
 extension MapViewController: CLLocationManagerDelegate {
     
-    func checkLocationServiceStatus() -> Bool {
+    func locationServiceIsEnabled() -> Bool {
         if CLLocationManager.locationServicesEnabled() {
             return true
         } else {
@@ -161,18 +155,18 @@ extension MapViewController: CLLocationManagerDelegate {
     func createAlertAndReturnIfTheLocationIsEnabled() -> (locationIsEnabled: Bool?,alertController: UIAlertController, actions: [UIAlertAction]) {
         var locationIsEnabled: Bool? = false
         // Alert Controller
-        let alertController = UIAlertController(title: "Position non detectée", message: "Activer la localisation", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: Word.positionNotDetected, message: Word.activateLocation, preferredStyle: .actionSheet)
         // Alert Action
-        let getAnnotationOfCountry = UIAlertAction(title: "Récuperer toutes les bornes", style: .default) { (_) in
+        let getAnnotationOfCountry = UIAlertAction(title: "Récupèrer toutes les bornes", style: .default) { (_) in
             self.getAnnotations(userPosition: nil)
             locationIsEnabled = nil
         }
         // Alert Action
-        let redirectingLocationSettings = UIAlertAction(title: "Acceder au réglages", style: .default) { (_) in
+        let redirectingLocationSettings = UIAlertAction(title: "Accèder aux réglages", style: .default) { (_) in
             if let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION") {
                 UIApplication.shared.open(url, options: [:]) { (success) in
                     guard success else { return }
-                    if self.checkLocationServiceStatus() == false {
+                    if self.locationServiceIsEnabled() == false {
                         locationIsEnabled = false
                     } else {
                         locationIsEnabled = true
@@ -217,25 +211,20 @@ extension MapViewController: CLLocationManagerDelegate {
     
     // pr***
     @objc func appEnterInForeground() {
-        if annotationManager.annotations.isEmpty && checkLocationServiceStatus() == true {
+        if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == true {
             guard let userPosition = userLocationManager.location?.coordinate else { return getAnnotations(userPosition: nil)}
             getAnnotations(userPosition: userPosition)
             print(userPosition)
-        } else if annotationManager.annotations.isEmpty && checkLocationServiceStatus() == false {
+        } else if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
             let _ = redirectionIfLocationServiceIsNotAvailable(displayGetAnnotationAction: true)
-        } else if annotationManager.annotations.isEmpty == false && checkLocationServiceStatus() == false {
-            
-            let userPositionIsEnabled = redirectionIfLocationServiceIsNotAvailable(displayGetAnnotationAction: false)
-            if userPositionIsEnabled == false {
-                
-                
-            }
+        } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
+            let _ = redirectionIfLocationServiceIsNotAvailable(displayGetAnnotationAction: false)
         }
     }
     
     func redirectionIfLocationServiceIsNotAvailable(displayGetAnnotationAction: Bool) -> Bool? {
         
-        guard checkLocationServiceStatus() == false else { return true }
+        guard locationServiceIsEnabled() == false else { return true }
         
         let alertObject = createAlertAndReturnIfTheLocationIsEnabled()
         

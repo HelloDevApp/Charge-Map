@@ -47,4 +47,9 @@ class Word {
     static let nameStationFacet = ("facet", "n_station")
     static let geofilterDistance = "geofilter.distance"
     
+    
+    // User Position
+    static let positionNotDetected = "Position non detectée"
+    static let activateLocation = "Activer la localisation"
+    static let getAllAnnotationInFrance = "Récuperer toutes les bornes"
 }
