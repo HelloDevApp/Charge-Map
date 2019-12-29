@@ -23,5 +23,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
         customLabelBottom.font = .boldSystemFont(ofSize: 20)
     }
     
+    override func prepareForReuse() {
+        customLabelTop.text = nil
+        customLabelBottom.text = nil  
+    }
+    
     
 }

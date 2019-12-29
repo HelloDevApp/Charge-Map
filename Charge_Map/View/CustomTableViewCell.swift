@@ -33,14 +33,13 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        
-//        terminalNameLabel = nil
-//        adressLabel = nil
-//        powerLabel = nil
-//        freeOrPaidLabel = nil
-//        distanceLabel = nil
-//        outletTypeLabel = nil
-//        numberOutletLabel = nil
+        terminalNameLabel.text = nil
+        adressLabel.text = nil
+        powerLabel.text = nil
+        freeOrPaidLabel.text = nil
+        distanceLabel.text = nil
+        outletTypeLabel.text = nil
+        numberOutletLabel.text = nil
     }
     
     override func layoutSubviews() {
