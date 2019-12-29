@@ -115,3 +115,12 @@ extension TableViewController: SettingsDelegate {
         )
     }
 }
+
+// MARK: TableView Delegate
+extension TableViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+}

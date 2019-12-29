@@ -22,14 +22,14 @@ class DetailViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        let theme = checkThemeColor(theme: Datas.choosenTheme)
-        navigationController?.navigationBar.barTintColor = theme.firstColor
-        navigationController?.navigationBar.isHidden = false
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let theme = checkThemeColor(theme: Datas.choosenTheme)
+        navigationController?.navigationBar.barTintColor = theme.firstColor
+        navigationController?.navigationBar.isHidden = false
+        
         if let view = view as? GradientView {
             applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
         }
