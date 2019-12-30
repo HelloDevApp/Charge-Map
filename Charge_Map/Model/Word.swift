@@ -31,10 +31,15 @@ class Word {
     
     // MARK: Others
     static let empty = ""
+    static let back = "Retour"
+    static let whatToDo = "Que voulez vous faire"
+    static let kilometers = "km"
     
-    // MARK: URL / PARAMETERS
+    // MARK: URL API / PARAMETERS
+    static let http = "http"
     static let https = "https"
-    static let host = "public.opendatasoft.com"
+    static let hostAppleMap = "maps.apple.com"
+    static let hostApi = "public.opendatasoft.com"
     static let path = "/api/records/1.0/search"
     
     // Parameters Name
@@ -52,4 +57,16 @@ class Word {
     static let positionNotDetected = "Position non detectée"
     static let activateLocation = "Activer la localisation"
     static let getAllAnnotationInFrance = "Récuperer toutes les bornes"
+    
+    // Url that redirects to the settings page
+    static let urlSettingsPages = "App-Prefs:root=Privacy&path=LOCATION"
+    
+    // Direction, Direction URL
+    static let getDirection = "Accéder à l'itinéraire"
+    static let sourceAdress = "saddr"
+    static let destinationAdress = "daddr"
+    static let directionFlg = (key: "dirflg", value: "d")
+    
+    // Favorite
+    static let addingStationInFav = "Ajouter la borne aux favoris"
 }

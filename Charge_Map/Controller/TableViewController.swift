@@ -83,7 +83,7 @@ extension TableViewController: UITableViewDataSource {
             let locationUser = CLLocation(latitude: coordinateUser.latitude, longitude: coordinateUser.longitude)
             let locationTerminal = CLLocation(latitude: coordinateTerminal.latitude, longitude: coordinateTerminal.longitude)
             cell.distanceLabel.text = String(format: "%.01f", locationUser.distance(from: locationTerminal) / 1000)
-            cell.distanceLabel.text?.append("km")
+            cell.distanceLabel.text?.append(Word.kilometers)
             
         }
     }
@@ -117,10 +117,34 @@ extension TableViewController: SettingsDelegate {
 }
 
 // MARK: TableView Delegate
-extension TableViewController: UITableViewDelegate {
+extension TableViewController: UITableViewDelegate, AlertActionDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        // We ask if the user wants to save the station or go to destination
+        
+        // redirecting action
+        let redirectingAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
+            
+        }
+        // safeguard action
+        let addToFavoritesAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
+            
+        }
+        // cancel action
+        let cancelAction = UIAlertAction(title: Word.back, style: .cancel) { (_) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        presentAlert(controller: self, title: Word.whatToDo, message: nil, actions: [addToFavoritesAction, redirectingAction, cancelAction])
     }
     
+}
+
+
+protocol FavoriteDelegate {}
+
+extension FavoriteDelegate {
+    func addToFavorite(annotation: CustomAnnotation) {
+    }
 }

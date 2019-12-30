@@ -20,9 +20,6 @@ class SettingViewController: UIViewController, SettingsDelegate {
         applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
-    
     @IBAction func ChangeInterfaceColor(_ sender: UIButton) {
         let navigationBar = navigationController?.navigationBar
         guard let gradientView = view as? GradientView else { return }
@@ -48,7 +45,6 @@ class SettingViewController: UIViewController, SettingsDelegate {
             default:
             break
         }
-        print("le bouton n° \(sender.tag) a été cliqué")
     }
     
     /*

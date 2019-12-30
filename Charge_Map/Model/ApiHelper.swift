@@ -10,8 +10,9 @@ import Foundation
 
 class ApiHelper: UrlEncoder {
     
+    
     var scheme: String = Word.https
-    var host: String = Word.host
+    var host: String = Word.hostApi
     var path: String = Word.path
     
     private var task: URLSessionDataTask?

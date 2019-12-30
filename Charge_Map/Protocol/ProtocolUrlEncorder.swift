@@ -10,21 +10,20 @@ import Foundation
 
 protocol UrlEncoder {
     
-    var scheme: String { get }
-    var host: String { get }
-    var path: String { get }
-    
-    func createUrlBase(scheme: String, host: String, path: String) -> URL?
+    func createUrlBase(scheme: String, host: String, path: String?) -> URL?
     func encode(urlBase: URL, parameters: [(String, String)]) -> URL?
+    
 }
 
 extension UrlEncoder {
     
-    func createUrlBase(scheme: String, host: String, path: String) -> URL? {
+    func createUrlBase(scheme: String, host: String, path: String?) -> URL? {
         var urlComponents = URLComponents()
         urlComponents.scheme = scheme
         urlComponents.host   = host
-        urlComponents.path   = path
+        if let path = path {
+            urlComponents.path   = path
+        }
         guard let url = urlComponents.url else { return nil }
         return url
     }

@@ -8,8 +8,8 @@
 
 import MapKit
 
-class AnnotationManager {
-    
+class AnnotationManager: UrlEncoder {
+
     let datas = Datas()
     
     // array containing the name of the properties of the json returned by the api
@@ -44,18 +44,19 @@ class AnnotationManager {
     }
     
     func returnUrlRedirection(destinationCoordinate: CLLocationCoordinate2D) -> URL? {
-        let parameters: [URLQueryItem] = [
-            URLQueryItem(name: "saddr", value: "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"),
-            URLQueryItem(name: "daddr", value: "\(Datas.coordinateUser.latitude),\(Datas.coordinateUser.longitude)"),
-            URLQueryItem(name: "dirflg", value: "d")]
         
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "http"
-        urlComponents.host   = "maps.apple.com"
-        urlComponents.queryItems = parameters
+        let urlBase = createUrlBase(scheme: Word.http, host: Word.hostAppleMap, path: nil)
         
-        guard let url = urlComponents.url else { return nil }
-        return url
+        let parameters: [(key: String, value: String)] =
+        [(Word.sourceAdress, "\(destinationCoordinate.latitude),\(destinationCoordinate.longitude)"),
+         (Word.destinationAdress , "\(Datas.coordinateUser.latitude),\(Datas.coordinateUser.longitude)"),
+         (Word.directionFlg.key, Word.directionFlg.value)]
+        
+        guard let urlBaseUnwrapped = urlBase else { return nil }
+        let url = encode(urlBase: urlBaseUnwrapped, parameters: parameters)
+        
+        guard let urlUnwrapped = url else { return nil }
+        return urlUnwrapped
     }
     
 }
