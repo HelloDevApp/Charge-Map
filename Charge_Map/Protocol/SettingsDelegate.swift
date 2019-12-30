@@ -8,17 +8,17 @@
 
 import UIKit
 
-enum Theme {
+enum Theme: String {
     
-    case blackAndWhite
-    case classic
-    case natural
-    case metal
-    case design
-    case ocean
-    case retro
-    case confort
-    case galaxy
+    case blackAndWhite = "blackAndWhite"
+    case classic = "classic"
+    case natural = "natural"
+    case metal = "metal"
+    case design = "design"
+    case ocean = "ocean"
+    case retro = "retro"
+    case confort = "confort"
+    case galaxy = "galaxy"
 }
 
 protocol SettingsDelegate {}
@@ -32,81 +32,91 @@ extension SettingsDelegate {
     }
     
     func applyTheme(theme: Theme, view: GradientView, navigationBar: UINavigationBar?, reverse: Bool) {
+        
+        let themeColors = checkThemeColor(theme: theme.rawValue)
+        
+        guard let firstColor = themeColors?.firstColor,
+              let secondColor = themeColors?.secondColor,
+              let thirdColor = themeColors?.thirdColor else { return }
+        
         Datas.choosenTheme = theme
-        let themeColors = checkThemeColor(theme: theme)
-        navigationBar?.barTintColor = themeColors.secondColor
-        navigationBar?.tintColor = themeColors.thirdColor
-        navigationBar?.titleTextAttributes = [NSAttributedString.Key.foregroundColor:themeColors.firstColor]
+        
+        navigationBar?.barTintColor = secondColor
+        navigationBar?.tintColor = thirdColor
+        navigationBar?.titleTextAttributes = [NSAttributedString.Key.foregroundColor:firstColor]
+    
         if reverse == false {
-            view.firstColor = themeColors.firstColor
-            view.secondColor = themeColors.secondColor
-            view.thirdColor = themeColors.thirdColor
+            view.firstColor = firstColor
+            view.secondColor = secondColor
+            view.thirdColor = thirdColor
         } else {
-            view.firstColor = themeColors.thirdColor
-            view.secondColor = themeColors.secondColor
-            view.thirdColor = themeColors.firstColor
+            view.firstColor = thirdColor
+            view.secondColor = secondColor
+            view.thirdColor = firstColor
         }
         
     }
     
-    func checkThemeColor(theme: Theme) -> (firstColor: UIColor, secondColor: UIColor, thirdColor: UIColor) {
+    func checkThemeColor(theme: String) -> (firstColor: UIColor, secondColor: UIColor, thirdColor: UIColor)? {
         let datas = Datas()
         
         switch theme {
             
-            case .blackAndWhite:
+            case Theme.blackAndWhite.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.blackAndWhiteFirstColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.blackAndWhiteSecondColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.blackAndWhiteThirdColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .classic:
+            case Theme.classic.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstClassicColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondClassicColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdClassicColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .confort:
+            case Theme.confort.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstConf)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondConf)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdConf)
                 return (firstColor, secondColor, thirdColor)
             
-            case .design:
+            case Theme.design.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstDesignColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondDesignColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdDesignColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .galaxy:
+            case Theme.galaxy.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstGalaxyColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondGalaxyColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdGalaxyColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .metal:
+            case Theme.metal.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstMetColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondMetColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdMetColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .natural:
+            case Theme.natural.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.naturalFirstColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.naturalSecondColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.naturalThirdColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .ocean:
+            case Theme.ocean.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstOceanColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondOceanColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdOceanColor)
                 return (firstColor, secondColor, thirdColor)
             
-            case .retro:
+            case Theme.retro.rawValue:
                 let firstColor = convertDatasColorToUIColor(datasColor: datas.firstRetroColor)
                 let secondColor = convertDatasColorToUIColor(datasColor: datas.secondRetroColor)
                 let thirdColor = convertDatasColorToUIColor(datasColor: datas.thirdRetroColor)
                 return (firstColor, secondColor, thirdColor)
+            default:
+            return nil
         }
     }
 }

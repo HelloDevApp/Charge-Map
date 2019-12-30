@@ -839,6 +839,9 @@
                     <navigationItem key="navigationItem" id="6dg-2K-EnA">
                         <barButtonItem key="rightBarButtonItem" image="Star" id="H94-w1-5Ns">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addStationInFavorites:" destination="cD0-n8-al9" id="hk6-7G-mYk"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>

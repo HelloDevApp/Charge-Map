@@ -12,6 +12,7 @@ import CoreData
 class CoreDataManager {
     
     var favoritesStation = [Station]()
+    var currentTheme = Datas.choosenTheme.rawValue
     
     let container = NSPersistentContainer(name: "Charge_Map")
     

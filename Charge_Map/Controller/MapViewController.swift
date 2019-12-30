@@ -15,6 +15,7 @@ class MapViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let userLocationManager = CLLocationManager()
+    var lastLocation: CLLocationCoordinate2D?
     let annotationManager = AnnotationManager()
     let apiHelper = ApiHelper()
     
@@ -24,8 +25,6 @@ class MapViewController: UIViewController, SettingsDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let theme = checkThemeColor(theme: Datas.choosenTheme)
-        navigationController?.navigationBar.tintColor = theme.firstColor
         navigationController?.navigationBar.isHidden = true
     }
     
@@ -50,6 +49,9 @@ class MapViewController: UIViewController, SettingsDelegate {
     /*    true = the location is enabled,
           nil = position refused
           false = position not retrived     */
+        
+        
+        
         let locationServiceAuthorization = launchActionsIfLocationServiceIsNotAvailable(controller: self, showGetAllAnnotationsAction: true)
         
         if locationServiceAuthorization == false {
@@ -71,7 +73,6 @@ class MapViewController: UIViewController, SettingsDelegate {
             apiHelper.addGeofilterUrl(latitude: "\(latitude)", longitude: "\(longitude)")
             guard let userCoordinate = getUserPostition.1 else { return }
             Datas.coordinateUser = userCoordinate
-            userLocationManager.stopUpdatingLocation()
         }
         
         apiHelper.getAnnotations { (success, result) in
@@ -181,13 +182,25 @@ extension MapViewController: CLLocationManagerDelegate, AlertActionDelegate, Red
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        guard let locationValue = manager.location?.coordinate else { return }
+        print("coordonnées recuperé")
+        print("dernier", locations.last)
+        print("premier", locations.first)
+        lastLocation = locations.last?.coordinate
+        userLocationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to find user's location: \(error.localizedDescription)")
     }
     
     @objc func appEnterInForeground() {
         if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == true {
-            guard let userPosition = setupUserLocation().1 else { return getAnnotations(userPosition: nil)}
-            getAnnotations(userPosition: userPosition)
+            let userPosition = setupUserLocation()
+            print("userPosition.1", userPosition.1)
+            lastLocation = userPosition.1
+            print(lastLocation)
+            guard let lastUserPosition = lastLocation else { return getAnnotations(userPosition: nil)}
+            getAnnotations(userPosition: lastUserPosition)
         } else if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
             let _ = launchActionsIfLocationServiceIsNotAvailable(controller: self, showGetAllAnnotationsAction: true)
         } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {

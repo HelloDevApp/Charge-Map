@@ -13,6 +13,11 @@ class TableViewController: UIViewController {
  
     var annotationManager: AnnotationManager!
     
+    private var coreDataManager: CoreDataManager {
+        guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
+        return cdm
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -97,10 +102,11 @@ extension TableViewController: SettingsDelegate {
         
         let gradientLayer = CAGradientLayer()
         
-        let theme = checkThemeColor(theme: theme)
-        let first = theme.firstColor
-        let second = theme.secondColor
-        let third = theme.thirdColor
+        let theme = checkThemeColor(theme: theme.rawValue)
+        
+        guard let first = theme?.firstColor,
+            let second = theme?.secondColor,
+            let third = theme?.thirdColor else { return }
         
         if even == false {
             gradientLayer.colors = [first.cgColor, second.cgColor, third.cgColor]
@@ -127,10 +133,12 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate {
         let redirectingAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
             
         }
+        
         // safeguard action
         let addToFavoritesAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
-            
+            self.coreDataManager.create(station_: self.annotationManager.annotations[indexPath.row])
         }
+        
         // cancel action
         let cancelAction = UIAlertAction(title: Word.back, style: .cancel) { (_) in
             self.dismiss(animated: true, completion: nil)

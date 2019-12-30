@@ -12,6 +12,10 @@ import MapKit
 class DetailViewController: UIViewController, SettingsDelegate {
     
     // This array is required to scan the fields and automate the assignment of values to the label in the cells.
+    private var coreDataManager: CoreDataManager {
+        guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
+        return cdm
+    }
     var fields = [Fields]()
     var apiHelper: ApiHelper?
     var annotationManager: AnnotationManager!
@@ -26,14 +30,21 @@ class DetailViewController: UIViewController, SettingsDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let theme = checkThemeColor(theme: Datas.choosenTheme)
-        navigationController?.navigationBar.barTintColor = theme.firstColor
+        let theme = checkThemeColor(theme: Datas.choosenTheme.rawValue)
         navigationController?.navigationBar.isHidden = false
+        guard let firstColor = theme?.firstColor else { return }
+        navigationController?.navigationBar.barTintColor = firstColor
+        
         
         if let view = view as? GradientView {
             applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
         }
         
+    }
+    
+    @IBAction func addStationInFavorites(_ sender: UIBarButtonItem) {
+        guard let annotationSelected = annotationManager.annotationSelected else { return }
+        coreDataManager.create(station_: annotationSelected)
     }
     
     @IBAction func goToMapsAppAction() {
