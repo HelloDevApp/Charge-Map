@@ -117,7 +117,9 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let cluster = annotation as? MKClusterAnnotation {
             if let firstAnnot = cluster.memberAnnotations.first as? CustomAnnotation {
-                return CustomAnnotationView(annotation: firstAnnot, reuseIdentifier: firstAnnot.type.rawValue)
+                let customAnnotationView = CustomAnnotationView(annotation: firstAnnot, reuseIdentifier: firstAnnot.type.rawValue)
+                customAnnotationView.displayPriority = .required
+                return customAnnotationView
             }
         }
         
