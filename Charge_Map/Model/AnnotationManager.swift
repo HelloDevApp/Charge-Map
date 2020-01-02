@@ -43,7 +43,7 @@ class AnnotationManager: UrlEncoder {
         }
     }
     
-    func returnUrlRedirection(destinationCoordinate: CLLocationCoordinate2D) -> URL? {
+    func getDirection(destinationCoordinate: CLLocationCoordinate2D) {
         
         let urlBase = createUrlBase(scheme: Word.http, host: Word.hostAppleMap, path: nil)
         
@@ -52,11 +52,15 @@ class AnnotationManager: UrlEncoder {
          (Word.destinationAdress , "\(Datas.coordinateUser.latitude),\(Datas.coordinateUser.longitude)"),
          (Word.directionFlg.key, Word.directionFlg.value)]
         
-        guard let urlBaseUnwrapped = urlBase else { return nil }
+        guard let urlBaseUnwrapped = urlBase else { return }
         let url = encode(urlBase: urlBaseUnwrapped, parameters: parameters)
         
-        guard let urlUnwrapped = url else { return nil }
-        return urlUnwrapped
+        guard let urlUnwrapped = url else { return }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(urlUnwrapped, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(urlUnwrapped)
+        }
     }
-    
 }

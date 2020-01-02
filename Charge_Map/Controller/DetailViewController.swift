@@ -55,14 +55,7 @@ class DetailViewController: UIViewController, SettingsDelegate {
     }
     
     private func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
-        
-        guard let url = annotationManager.returnUrlRedirection(destinationCoordinate: destinationCoordinate) else { return }
-        
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(url)
-        }
+        annotationManager.getDirection(destinationCoordinate: destinationCoordinate)
     }
 }
 

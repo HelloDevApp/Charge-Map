@@ -204,6 +204,7 @@ extension MapViewController: CLLocationManagerDelegate, AlertActionDelegate, Red
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastCoordinate = locations.first?.coordinate, lastLocation == nil {
             lastLocation = lastCoordinate
+            Datas.coordinateUser = lastCoordinate
             userLocationManager.stopUpdatingLocation()
         }
     }

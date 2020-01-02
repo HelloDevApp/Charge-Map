@@ -131,7 +131,8 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate {
         
         // redirecting action
         let redirectingAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
-            
+            let coordinate = self.annotationManager.annotations[indexPath.row].coordinate
+            self.annotationManager.getDirection(destinationCoordinate: coordinate)
         }
         
         // safeguard action
