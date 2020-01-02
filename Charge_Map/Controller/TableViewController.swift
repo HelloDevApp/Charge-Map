@@ -62,7 +62,7 @@ extension TableViewController: UITableViewDataSource {
 // MARK: - Filled Methods
 extension TableViewController {
     
-    func fillCell(for cell: CustomTableViewCell, with annotations: [CustomAnnotation], indexPath: IndexPath) {
+    private func fillCell(for cell: CustomTableViewCell, with annotations: [CustomAnnotation], indexPath: IndexPath) {
         let annotation = annotations[indexPath.row]
         fillTextOfLabels(field: annotation.field, cell: cell, indexPath: indexPath)
     }
@@ -162,28 +162,44 @@ extension TableViewController: SettingsDelegate {
 extension TableViewController: UITableViewDelegate, AlertActionDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // create alert actions
+        let redirectingAlertAction = createRedicrectingAlertAction(indexPath: indexPath)
+        let addToFavoritesAlertAction = createAddToFavoritesAlertAction(indexPath: indexPath)
+        let cancelAlertAction = createCancelAlertAction()
         
-        // We ask if the user wants to save the station or go to destination
-        
+        presentAlert(controller: self, title: Word.whatToDo, message: nil, actions: [addToFavoritesAlertAction, redirectingAlertAction, cancelAlertAction])
+    }
+    
+    // MARK: - Create Alert Action Methods
+    private func createRedicrectingAlertAction(indexPath: IndexPath) -> UIAlertAction {
         // redirecting action
-        let redirectingAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
+        let redirectingAlertAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
             let coordinate = self.annotationManager.annotations[indexPath.row].coordinate
             self.annotationManager.getDirection(destinationCoordinate: coordinate)
         }
-        
+        return redirectingAlertAction
+    }
+    
+    private func createAddToFavoritesAlertAction(indexPath: IndexPath) -> UIAlertAction {
         // safeguard action
-        let addToFavoritesAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
+        let addToFavoritesAlertAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
             let annotation = self.annotationManager.annotations[indexPath.row]
             let favoriteManager = FavoriteManager()
             let alertSaveDetails = favoriteManager.saveStation(annotation: annotation, coreDataManager: self.coreDataManager)
-            self.presentAlert(controller: self, title: alertSaveDetails.titleAction, message: alertSaveDetails.messageAction, actions: [UIAlertAction(title: "ok", style: .cancel, handler: nil)])
+            let title = alertSaveDetails.titleAction
+            let message = alertSaveDetails.messageAction
+            let action = UIAlertAction(title: "ok", style: .cancel, handler: nil)
+            self.presentAlert(controller: self, title: title, message: message, actions: [action])
         }
-        
+        return addToFavoritesAlertAction
+    }
+    
+    private func createCancelAlertAction() -> UIAlertAction {
         // cancel action
-        let cancelAction = UIAlertAction(title: Word.back, style: .cancel) { (_) in
+        let cancelAlertAction = UIAlertAction(title: Word.back, style: .cancel) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        
-        presentAlert(controller: self, title: Word.whatToDo, message: nil, actions: [addToFavoritesAction, redirectingAction, cancelAction])
+        return cancelAlertAction
     }
+    
 }

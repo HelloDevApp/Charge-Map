@@ -227,14 +227,20 @@ extension MapViewController: CLLocationManagerDelegate, RedirectionDelegate {
 extension MapViewController {
     
     func setupUserLocation() {
-        lastLocation = nil
+//        lastLocation = nil
         userLocationManager.delegate = self
         if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
             userLocationManager.requestWhenInUseAuthorization()
             userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             userLocationManager.startUpdatingLocation()
         } else {
-            presentAlert(showCancelAction: false)
+            if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
+                return
+            } else if annotationManager.annotations.isEmpty == false {
+                presentAlert(showCancelAction: true)
+            } else {
+                presentAlert(showCancelAction: false)
+            }
         }
     }
     
