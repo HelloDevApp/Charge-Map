@@ -10,7 +10,6 @@ import Foundation
 
 class ApiHelper: UrlEncoder {
     
-    
     var scheme: String = Word.https
     var host: String = Word.hostApi
     var path: String = Word.path
@@ -38,7 +37,7 @@ class ApiHelper: UrlEncoder {
         parameters.append((key: Word.geofilterDistance, value: "\(latitude),\(longitude),50000"))
     }
     
-    func removeGeofilterUrl() {
+    private func removeGeofilterUrl() {
         for (offset, element: (key, _)) in parameters.enumerated() {
             if key == Word.geofilterDistance {
                 parameters.remove(at: offset)

@@ -11,33 +11,45 @@ import MapKit
 
 class DetailViewController: UIViewController, SettingsDelegate {
     
+    // MARK: - Properties
     // This array is required to scan the fields and automate the assignment of values to the label in the cells.
     private var coreDataManager: CoreDataManager {
         guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
         return cdm
     }
+    
     var fields = [Fields]()
     var apiHelper: ApiHelper?
     var annotationManager: AnnotationManager!
     
-    
+    // MARK: - Outlets
     @IBOutlet var gradientView: GradientView!
-    
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
     
+    // MARK: - Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        applyTheme()
+    }
+    
+    // MARK: - Theme Methods
+    func applyTheme() {
         let theme = checkThemeColor(theme: Datas.choosenTheme.rawValue)
         navigationController?.navigationBar.isHidden = false
         guard let firstColor = theme?.firstColor else { return }
         navigationController?.navigationBar.barTintColor = firstColor
         applyThemeIfViewAsGradientView()
-        
     }
     
+    private func applyThemeIfViewAsGradientView() {
+        if let view = view as? GradientView {
+            applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
+        }
+    }
+    
+    // MARK: - IBActions
     @IBAction func addStationInFavorites(_ sender: UIBarButtonItem) {
         guard let annotationSelected = annotationManager.annotationSelected else { return }
         coreDataManager.create(station_: annotationSelected)
@@ -48,12 +60,8 @@ class DetailViewController: UIViewController, SettingsDelegate {
         goToMapsApp(destinationCoordinate: annotationSelected.coordinate)
     }
     
-    private func applyThemeIfViewAsGradientView() {
-        if let view = view as? GradientView {
-            applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
-        }
-    }
     
+    // MARK: - Redirecting Methods
     private func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
         annotationManager.getDirection(destinationCoordinate: destinationCoordinate)
     }

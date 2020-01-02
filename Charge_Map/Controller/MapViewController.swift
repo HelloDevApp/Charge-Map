@@ -12,8 +12,10 @@ import CoreLocation
 
 class MapViewController: UIViewController, SettingsDelegate {
     
+    // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
     
+    // MARK: Properties
     let apiHelper = ApiHelper()
     let annotationManager = AnnotationManager()
     let userLocationManager = CLLocationManager()
@@ -27,8 +29,10 @@ class MapViewController: UIViewController, SettingsDelegate {
         }
     }
     
+    // MARK: Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        addNotificationWillEnterForeground()
         setupController()
     }
     
@@ -41,6 +45,7 @@ class MapViewController: UIViewController, SettingsDelegate {
         setupUserLocation()
     }
     
+    // IBActions
     @IBAction func showSettingViewController(_ sender: UIButton) {
         performSegue(withIdentifier: "mapVCToSettingVC", sender: nil)
     }
@@ -51,15 +56,18 @@ class MapViewController: UIViewController, SettingsDelegate {
     }
     
     
+    // MARK: Setup & Settings Methods
     // Setup coordinates user, mapView, launch request and display annotations
-    private func setupController() {
+    fileprivate func addNotificationWillEnterForeground() {
         let notifName = UIApplication.willEnterForegroundNotification
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appEnterInForeground), name: notifName, object: nil)
+    }
+    
+    private func setupController() {
         mapView.mapType = .hybridFlyover
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
-    
     
     private func updateMapView() {
         DispatchQueue.main.async {
@@ -84,7 +92,9 @@ class MapViewController: UIViewController, SettingsDelegate {
         }
     }
     
+    // MARK: - Network Call
     func getAnnotations(userPosition: CLLocationCoordinate2D?) {
+        
         annotationManager.annotations.removeAll()
         mapView.removeAllAnnotations()
         
@@ -150,33 +160,23 @@ extension MapViewController {
     }
 }
 
-
-extension MapViewController: CLLocationManagerDelegate, AlertActionDelegate, RedirectionDelegate { 
-    
-    
+// MARK: LocationManagerDelegate
+extension MapViewController: CLLocationManagerDelegate, RedirectionDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
+        switchAuthorizationStatusToExecuteAction(status)
+    }
+    
+    private func switchAuthorizationStatusToExecuteAction(_ status: CLAuthorizationStatus) {
         switch status {
             case .notDetermined:
                 userLocationManager.requestWhenInUseAuthorization()
             
             case .restricted:
-                if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
-                    presentlert(showCancelAction: false)
-                } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
-                    presentlert(showCancelAction: true)
-                }
+                presentAlertToRestrictedCase()
             
             case .denied:
-                print("3")
-                
-                if annotationManager.annotations.isEmpty {
-                    presentlert(showCancelAction: false)
-                    
-                } else {
-                    presentlert(showCancelAction: true)
-                }
+                presentAlertToDeniedCase()
             
             case .authorizedAlways, .authorizedWhenInUse:
                 userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -187,21 +187,27 @@ extension MapViewController: CLLocationManagerDelegate, AlertActionDelegate, Red
         }
     }
     
-    func setupUserLocation() {
-        lastLocation = nil
-        userLocationManager.delegate = self
-        if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
-            userLocationManager.requestWhenInUseAuthorization()
-            userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            userLocationManager.startUpdatingLocation()
-        } else {
-            presentlert(showCancelAction: false)
+    private func presentAlertToRestrictedCase() {
+        if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
+            presentAlert(showCancelAction: false)
+        } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
+            presentAlert(showCancelAction: true)
         }
     }
     
-    
+    private func presentAlertToDeniedCase() {
+        if annotationManager.annotations.isEmpty {
+            presentAlert(showCancelAction: false)
+        } else {
+            presentAlert(showCancelAction: true)
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        updateCoordinateUserAndStopUpdating(locations)
+    }
+    
+    private func updateCoordinateUserAndStopUpdating(_ locations: [CLLocation]) {
         if let lastCoordinate = locations.first?.coordinate, lastLocation == nil {
             lastLocation = lastCoordinate
             Datas.coordinateUser = lastCoordinate
@@ -213,25 +219,42 @@ extension MapViewController: CLLocationManagerDelegate, AlertActionDelegate, Red
         print("Impossible de trouver l'emplacement de l'utilisateur: \(error.localizedDescription)")
     }
     
+}
+
+// Mark: - Setups and Settings
+extension MapViewController {
+    
+    func setupUserLocation() {
+        lastLocation = nil
+        userLocationManager.delegate = self
+        if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
+            userLocationManager.requestWhenInUseAuthorization()
+            userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            userLocationManager.startUpdatingLocation()
+        } else {
+            presentAlert(showCancelAction: false)
+        }
+    }
     
     @objc func appEnterInForeground() {
         if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == true {
             setupUserLocation()
         } else if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
-            presentlert(showCancelAction: false)
+            presentAlert(showCancelAction: false)
         } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
-            presentlert(showCancelAction: true)
+            presentAlert(showCancelAction: true)
         } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == true {
             return
         }
     }
+    
 }
 
 
 // MARK: - ALERTS
 extension MapViewController {
     
-    func presentlert(showCancelAction: Bool) {
+    func presentAlert(showCancelAction: Bool) {
         let alertController = UIAlertController(title: "Position non detectée", message: "Veuillez activer votre position.", preferredStyle: .actionSheet)
         let action1 = UIAlertAction(title: "Récupèrer toutes les annotations", style: .default) { (_) in
             self.getAnnotations(userPosition: nil)

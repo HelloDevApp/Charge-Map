@@ -8,7 +8,7 @@
 
 import MapKit
 
-class AnnotationManager: UrlEncoder {
+class AnnotationManager {
 
     let datas = Datas()
     
@@ -42,6 +42,9 @@ class AnnotationManager: UrlEncoder {
             annotations.append(annotation)
         }
     }
+}
+
+extension AnnotationManager: UrlEncoder {
     
     func getDirection(destinationCoordinate: CLLocationCoordinate2D) {
         

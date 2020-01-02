@@ -18,6 +18,7 @@ class TableViewController: UIViewController {
         return cdm
     }
     
+    // MARK: - LifeCycle METHODS
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -29,7 +30,7 @@ class TableViewController: UIViewController {
 }
 
 
-// MARK: - Table View Settings
+// MARK: - Table View Data Source
 extension TableViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,41 +57,76 @@ extension TableViewController: UITableViewDataSource {
         }
         return UITableViewCell()
     }
+}
+
+// MARK: - Filled Methods
+extension TableViewController {
     
     func fillCell(for cell: CustomTableViewCell, with annotations: [CustomAnnotation], indexPath: IndexPath) {
         let annotation = annotations[indexPath.row]
-        fillTextLabel(field: annotation.field, cell: cell, indexPath: indexPath)
+        fillTextOfLabels(field: annotation.field, cell: cell, indexPath: indexPath)
     }
     
-    func fillTextLabel(field: Fields?, cell: CustomTableViewCell, indexPath: IndexPath) {
+    private func fillTextOfLabels(field: Fields?, cell: CustomTableViewCell, indexPath: IndexPath) {
         
         if let field = field {
-            if let powerMax = field.puiss_max {
-                cell.powerLabel.text = "\(powerMax)"
-            }
-            if let adress = field.ad_station {
-                cell.adressLabel.text = "\(adress)"
-            }
-            if let freeOrPaid = field.acces_recharge {
-                cell.freeOrPaidLabel.text = "\(freeOrPaid)"
-            }
-            if let outletType = field.type_prise {
-                cell.outletTypeLabel.text = "\(outletType)"
-            }
-            if let numberOutlet = field.nbre_pdc {
-                cell.numberOutletLabel.text = "\(numberOutlet)"
-            }
-            if let terminalNameStation = field.n_station {
-                cell.terminalNameLabel.text = "\(terminalNameStation)"
-            }
-            let coordinateUser = Datas.coordinateUser
-            let coordinateTerminal = annotationManager.annotations[indexPath.row].coordinate
-            let locationUser = CLLocation(latitude: coordinateUser.latitude, longitude: coordinateUser.longitude)
-            let locationTerminal = CLLocation(latitude: coordinateTerminal.latitude, longitude: coordinateTerminal.longitude)
-            cell.distanceLabel.text = String(format: "%.01f", locationUser.distance(from: locationTerminal) / 1000)
-            cell.distanceLabel.text?.append(Word.kilometers)
-            
+            updatePowerLabel(field, cell)
+            updateAdressLabel(field, cell)
+            updateFreeOrPaidLabel(field, cell)
+            updateOutletTypeLabel(field, cell)
+            updateNumberOutletLabel(field, cell)
+            updateTerminalNameLabel(field, cell)
+            updateDistanceLabel(cell: cell, indexPath: indexPath)
         }
+    }
+}
+
+// MARK: - UPDATE LABELS METHODS
+extension TableViewController {
+    
+    private func updatePowerLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let powerMax = field.puiss_max {
+            cell.powerLabel.text = "\(powerMax)"
+        }
+    }
+    
+    private func updateAdressLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let adress = field.ad_station {
+            cell.adressLabel.text = "\(adress)"
+        }
+    }
+    
+    private func updateFreeOrPaidLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let freeOrPaid = field.acces_recharge {
+            cell.freeOrPaidLabel.text = "\(freeOrPaid)"
+        }
+    }
+    
+    private func updateOutletTypeLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let outletType = field.type_prise {
+            cell.outletTypeLabel.text = "\(outletType)"
+        }
+    }
+    
+    private func updateNumberOutletLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let numberOutlet = field.nbre_pdc {
+            cell.numberOutletLabel.text = "\(numberOutlet)"
+        }
+    }
+    
+    private func updateTerminalNameLabel(_ field: Fields, _ cell: CustomTableViewCell) {
+        if let terminalNameStation = field.n_station {
+            cell.terminalNameLabel.text = "\(terminalNameStation)"
+        }
+    }
+    
+    private func updateDistanceLabel(cell: CustomTableViewCell, indexPath: IndexPath) {
+        let coordinateUser = Datas.coordinateUser
+        let coordinateTerminal = annotationManager.annotations[indexPath.row].coordinate
+        let locationUser = CLLocation(latitude: coordinateUser.latitude, longitude: coordinateUser.longitude)
+        let locationTerminal = CLLocation(latitude: coordinateTerminal.latitude, longitude: coordinateTerminal.longitude)
+        cell.distanceLabel.text = String(format: "%.01f", locationUser.distance(from: locationTerminal) / 1000)
+        cell.distanceLabel.text?.append(Word.kilometers)
     }
 }
 
