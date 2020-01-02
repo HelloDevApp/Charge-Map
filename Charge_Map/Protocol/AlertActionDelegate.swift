@@ -11,6 +11,7 @@ import UIKit
 protocol AlertActionDelegate {}
 
 extension AlertActionDelegate {
+    
     func presentAlert(controller: UIViewController, title: String, message: String?, actions: [UIAlertAction]) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)

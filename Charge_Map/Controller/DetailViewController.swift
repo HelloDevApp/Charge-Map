@@ -34,11 +34,7 @@ class DetailViewController: UIViewController, SettingsDelegate {
         navigationController?.navigationBar.isHidden = false
         guard let firstColor = theme?.firstColor else { return }
         navigationController?.navigationBar.barTintColor = firstColor
-        
-        
-        if let view = view as? GradientView {
-            applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
-        }
+        applyThemeIfViewAsGradientView()
         
     }
     
@@ -52,7 +48,13 @@ class DetailViewController: UIViewController, SettingsDelegate {
         goToMapsApp(destinationCoordinate: annotationSelected.coordinate)
     }
     
-    func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
+    private func applyThemeIfViewAsGradientView() {
+        if let view = view as? GradientView {
+            applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
+        }
+    }
+    
+    private func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
         
         guard let url = annotationManager.returnUrlRedirection(destinationCoordinate: destinationCoordinate) else { return }
         
@@ -110,9 +112,11 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     // Allows to replace the abbreviations returned by the api with normal words and assign values to the cell
-    func returnCellForRow(arrayLabel: [String], arrayValue: [String], collectionCell: CustomCollectionViewCell, indexPath: IndexPath) {
+    private func returnCellForRow(arrayLabel: [String], arrayValue: [String], collectionCell: CustomCollectionViewCell, indexPath: IndexPath) {
+        
         let labelWithoutUnderscore = arrayLabel[indexPath.row].replacingOccurrences(of: "_", with: " ").capitalized
         let value = "\(arrayValue[indexPath.row])"
+        
         if labelWithoutUnderscore == Word.nStation {
             collectionCell.setup(messageTop: Word.nameStation, messageBottom: value)
         } else if labelWithoutUnderscore == Word.adress {

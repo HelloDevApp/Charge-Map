@@ -20,18 +20,12 @@ extension RedirectionDelegate {
         }
     }
     
-    func redirectingToLocationSettings() -> Bool {
-        
-        var locationServiceIsEnabled: Bool = false
+    func redirectingToLocationSettings() {
         
         if let url = URL(string: Word.urlSettingsPages) {
-            UIApplication.shared.open(url, options: [:]) { (success) in
-                guard success else { return }
-                locationServiceIsEnabled = self.locationServiceIsEnabled()
-            }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
         
-        return locationServiceIsEnabled
     }
     
     func launchActionsIfLocationServiceIsNotAvailable(controller: MapViewController, showGetAllAnnotationsAction: Bool) -> Bool? {
@@ -41,7 +35,7 @@ extension RedirectionDelegate {
         var locationIsEnabled: Bool? = nil
         
         // get all annotations Action
-        let getAllAnnotationsAction = UIAlertAction(title: "Récupèrer toutes les bornes", style: .default) { (_) in
+        let getAllAnnotationsAction = UIAlertAction(title: Word.getAllAnnotationInFrance, style: .default) { (_) in
             controller.getAnnotations(userPosition: nil)
             locationIsEnabled = false
         }

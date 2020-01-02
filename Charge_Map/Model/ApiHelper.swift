@@ -28,7 +28,22 @@ class ApiHelper: UrlEncoder {
     
     // method that adds a parameter to the request to retrieve only nearby annotations
     func addGeofilterUrl(latitude: String, longitude: String) {
+        for (offset, element: (key, _)) in parameters.enumerated() {
+            if key != Word.geofilterDistance  {
+                continue
+            } else {
+                parameters.remove(at: offset)
+            }
+        }
         parameters.append((key: Word.geofilterDistance, value: "\(latitude),\(longitude),50000"))
+    }
+    
+    func removeGeofilterUrl() {
+        for (offset, element: (key, _)) in parameters.enumerated() {
+            if key == Word.geofilterDistance {
+                parameters.remove(at: offset)
+            }
+        }
     }
     
     // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
@@ -36,7 +51,7 @@ class ApiHelper: UrlEncoder {
 //        addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
         if let urlBase = createUrlBase(scheme: self.scheme, host: self.host, path: self.path),
             let url = encode(urlBase: urlBase, parameters: parameters) {
-            
+            print(url)
             let session = URLSession(configuration: .default)
             
             let task = session.dataTask(with: url) { (data, response, error) in
@@ -51,6 +66,7 @@ class ApiHelper: UrlEncoder {
             }
             task.resume()
         }
+        removeGeofilterUrl()
     }
     
     /// Allows to delete duplicates annotation returned by the api
