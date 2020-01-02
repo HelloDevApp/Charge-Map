@@ -40,20 +40,20 @@ class CoreDataManager {
     }
     
     // MARK: - Methods (CRUD)
-    func create(station_: CustomAnnotation) {
-        let station = Station(context: viewContext)
-        station.latitude = station_.coordinate.latitude
-        station.longitude = station_.coordinate.longitude
-        station.accessibility = station_.field?.accessibilite
-        station.adress = station_.field?.ad_station
-        station.chargeAccess = station_.field?.acces_recharge
-        station.name = station_.field?.n_station
-        station.numberOutlets = Int16(station_.field?.nbre_pdc ?? 0)
-        station.outletType = station_.field?.type_prise
-        station.powerMax = station_.field?.puiss_max ?? 0
-        station.updateDate = station_.field?.date_maj
+    func create(station: CustomAnnotation) {
+        let station_ = Station(context: viewContext)
+        station_.latitude = station.coordinate.latitude
+        station_.longitude = station.coordinate.longitude
+        station_.accessibility = station.field?.accessibilite
+        station_.adress = station.field?.ad_station
+        station_.chargeAccess = station.field?.acces_recharge
+        station_.name = station.field?.n_station
+        station_.numberOutlets = Int16(station.field?.nbre_pdc ?? 0)
+        station_.outletType = station.field?.type_prise
+        station_.powerMax = station.field?.puiss_max ?? 0
+        station_.updateDate = station.field?.date_maj
         
-        viewContext.insert(station)
+        viewContext.insert(station_)
         update()
     }
     
@@ -62,7 +62,6 @@ class CoreDataManager {
         
         do {
             favoritesStation = try viewContext.fetch(request).reversed()
-            //                favoritesStation = try viewContext.fetch(request).reversed()
             print("retrieve Favorites...")
             return favoritesStation
         }
