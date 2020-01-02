@@ -173,7 +173,10 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate {
         
         // safeguard action
         let addToFavoritesAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
-            self.coreDataManager.create(station_: self.annotationManager.annotations[indexPath.row])
+            let annotation = self.annotationManager.annotations[indexPath.row]
+            let favoriteManager = FavoriteManager()
+            let alertSaveDetails = favoriteManager.saveStation(annotation: annotation, coreDataManager: self.coreDataManager)
+            self.presentAlert(controller: self, title: alertSaveDetails.titleAction, message: alertSaveDetails.messageAction, actions: [UIAlertAction(title: "ok", style: .cancel, handler: nil)])
         }
         
         // cancel action
@@ -182,14 +185,5 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate {
         }
         
         presentAlert(controller: self, title: Word.whatToDo, message: nil, actions: [addToFavoritesAction, redirectingAction, cancelAction])
-    }
-    
-}
-
-
-protocol FavoriteDelegate {}
-
-extension FavoriteDelegate {
-    func addToFavorite(annotation: CustomAnnotation) {
     }
 }

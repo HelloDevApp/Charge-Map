@@ -32,6 +32,7 @@
 		52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */; };
 		52912E8D23B7A68F003E5026 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8C23B7A68F003E5026 /* Station.swift */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
+		52DB5A5723BE923200347EB6 /* FavoriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DB5A5623BE923200347EB6 /* FavoriteManager.swift */; };
 		52F052E923B983B7006B770F /* RedirectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052E823B983B7006B770F /* RedirectionDelegate.swift */; };
 		52F052EC23B98568006B770F /* AlertActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052EB23B98568006B770F /* AlertActionDelegate.swift */; };
 		52F052EE23B9920D006B770F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052ED23B9920D006B770F /* CoreDataManager.swift */; };
@@ -79,6 +80,7 @@
 		52912E8C23B7A68F003E5026 /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
+		52DB5A5623BE923200347EB6 /* FavoriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteManager.swift; sourceTree = "<group>"; };
 		52F052E823B983B7006B770F /* RedirectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectionDelegate.swift; sourceTree = "<group>"; };
 		52F052EB23B98568006B770F /* AlertActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionDelegate.swift; sourceTree = "<group>"; };
 		52F052ED23B9920D006B770F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				528EDCAE23BD9EEE00841FD8 /* Service */,
 				528EDCAD23BD9EDC00841FD8 /* DataBase */,
 				52F2480C23B0194200B1DE0A /* AnnotationManager.swift */,
+				52DB5A5623BE923200347EB6 /* FavoriteManager.swift */,
 				52424823239FA4980017D848 /* Datas.swift */,
 				520B863023AF48A0002F8DA6 /* Word.swift */,
 			);
@@ -347,6 +350,7 @@
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
 				52656AB923B43B940013C028 /* SettingViewController.swift in Sources */,
 				5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */,
+				52DB5A5723BE923200347EB6 /* FavoriteManager.swift in Sources */,
 				52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */,
 				52156686238630E3000270F1 /* DetailViewController.swift in Sources */,
 			);

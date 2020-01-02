@@ -52,7 +52,7 @@ class DetailViewController: UIViewController, SettingsDelegate {
     // MARK: - IBActions
     @IBAction func addStationInFavorites(_ sender: UIBarButtonItem) {
         guard let annotationSelected = annotationManager.annotationSelected else { return }
-        coreDataManager.create(station_: annotationSelected)
+        coreDataManager.create(station: annotationSelected)
     }
     
     @IBAction func goToMapsAppAction() {
