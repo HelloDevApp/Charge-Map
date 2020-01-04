@@ -25,13 +25,13 @@ protocol SettingsDelegate {}
 
 extension SettingsDelegate {
     
-    func convertDatasColorToUIColor(datasColor: (red: Double, green:
+    private func convertDatasColorToUIColor(datasColor: (red: Double, green:
         Double, blue: Double , alpha: Int)) -> UIColor {
         let color = UIColor(red: CGFloat(datasColor.red), green: CGFloat(datasColor.green), blue: CGFloat(datasColor.blue), alpha: CGFloat(datasColor.alpha))
         return color
     }
     
-    func applyTheme(theme: Theme, view: GradientView, navigationBar: UINavigationBar?, reverse: Bool) {
+    func applyTheme(theme: Theme, view: UIView?, navigationBar: UINavigationBar?, reverse: Bool) {
         
         let themeColors = checkThemeColor(theme: theme.rawValue)
         
@@ -45,6 +45,8 @@ extension SettingsDelegate {
         navigationBar?.tintColor = thirdColor
         navigationBar?.titleTextAttributes = [NSAttributedString.Key.foregroundColor:firstColor]
     
+        guard let view = view as? GradientView else { return }
+        
         if reverse == false {
             view.firstColor = firstColor
             view.secondColor = secondColor

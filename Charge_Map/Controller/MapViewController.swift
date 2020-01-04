@@ -14,12 +14,13 @@ class MapViewController: UIViewController, SettingsDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     // MARK: Properties
-    let apiHelper = ApiHelper()
-    let annotationManager = AnnotationManager()
-    let userLocationManager = CLLocationManager()
-    var recordsWithoutDuplicates: [Record?] = []
+    private var coreDataManager: CoreDataManager {
+        guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
+        return cdm
+    }
     
     var lastLocation: CLLocationCoordinate2D? = nil {
         willSet {
@@ -29,14 +30,26 @@ class MapViewController: UIViewController, SettingsDelegate {
         }
     }
     
+    let apiHelper = ApiHelper()
+    let annotationManager = AnnotationManager()
+    let userLocationManager = CLLocationManager()
+    var recordsWithoutDuplicates: [Record?] = []
+    
     // MARK: Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         addNotificationWillEnterForeground()
         setupController()
+        
+        if coreDataManager.read().isEmpty {
+            favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
+        } else {
+            favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        applyTheme(theme: Datas.choosenTheme, view: nil, navigationBar: navigationController?.navigationBar, reverse: false)
         navigationController?.navigationBar.isHidden = true
     }
     
@@ -45,9 +58,13 @@ class MapViewController: UIViewController, SettingsDelegate {
         setupUserLocation()
     }
     
-    // IBActions
+    // MARK: @IBActions
     @IBAction func showSettingViewController(_ sender: UIButton) {
         performSegue(withIdentifier: "mapVCToSettingVC", sender: nil)
+    }
+    
+    @IBAction func showFavoritesView(_ sender: Any) {
+        performSegue(withIdentifier: "mapVCToFavoriteVC", sender: nil)
     }
     
     @IBAction func showTableView(_ sender: UIButton) {
@@ -156,8 +173,8 @@ extension MapViewController {
             }
         } else if segue.identifier == Word.mapVCToTableVC, let tableVC = segue.destination as? TableViewController {
             tableVC.annotationManager = annotationManager
-        } else if segue.identifier == "mapVCToSettingVC", let settingVC = segue.destination as? SettingViewController {
-            
+        } else if segue.identifier == "mapVCToFavoriteVC", let favoriteTableVC = segue.destination as? FavoriteTableViewController {
+            favoriteTableVC.annotationManager = annotationManager
         }
     }
 }

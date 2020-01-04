@@ -10,6 +10,8 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var favoriteImageView: UIImageView!
+    
     var gradient = CAGradientLayer()
     
     @IBOutlet weak var stackView: UIStackView!

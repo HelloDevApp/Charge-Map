@@ -26,6 +26,17 @@ class FavoriteManager: AlertActionDelegate {
         
         if switchCanSaveToreturnAlertDetails(canSave: canSave).okToSaved {
             coreDataManager.create(station: annotation)
+            print("station ajouté")
+        } else {
+            for station in coreDataManager.read() {
+                if station.latitude == annotation.coordinate.latitude,
+                    station.longitude == annotation.coordinate.longitude,
+                    station.name == annotation.field?.n_station {
+                    coreDataManager.delete(station_: station)
+                    print("station supprimé")
+                    break
+                }
+            }
         }
         
         return switchCanSaveToreturnAlertDetails(canSave: canSave)

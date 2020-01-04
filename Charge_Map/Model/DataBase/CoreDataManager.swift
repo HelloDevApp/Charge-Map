@@ -39,8 +39,30 @@ class CoreDataManager {
         }
     }
     
+    func checkIfStationIsInFavorites(station: Station) -> Bool {
+        var isInFavorite = false
+        
+        for favoriteStation in read() {
+            if station != favoriteStation {
+                isInFavorite = false
+            } else {
+                isInFavorite = true
+                break
+            }
+        }
+        return isInFavorite
+    }
+    
     // MARK: - Methods (CRUD)
     func create(station: CustomAnnotation) {
+        
+        let station_ = createEntity(station: station)
+        
+        viewContext.insert(station_)
+        update()
+    }
+    
+    private func createEntity(station: CustomAnnotation) -> Station {
         let station_ = Station(context: viewContext)
         station_.latitude = station.coordinate.latitude
         station_.longitude = station.coordinate.longitude
@@ -52,16 +74,14 @@ class CoreDataManager {
         station_.outletType = station.field?.type_prise
         station_.powerMax = station.field?.puiss_max ?? 0
         station_.updateDate = station.field?.date_maj
-        
-        viewContext.insert(station_)
-        update()
+        return station_
     }
     
     func read() -> [Station] {
         let request: NSFetchRequest<Station> = Station.fetchRequest()
         
         do {
-            favoritesStation = try viewContext.fetch(request).reversed()
+            favoritesStation = try viewContext.fetch(request)
             print("retrieve Favorites...")
             return favoritesStation
         }
@@ -75,6 +95,7 @@ class CoreDataManager {
         guard viewContext.hasChanges else { return }
         do {
             try viewContext.save()
+            favoritesStation = read()
         } catch let error as NSError {
             print("Error: \(error), \(error.userInfo)")
         }
@@ -83,7 +104,6 @@ class CoreDataManager {
     
     func delete(station_: Station) {
         viewContext.delete(station_)
-        favoritesStation = read()
         update()
     }
 }

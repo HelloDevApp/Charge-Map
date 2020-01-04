@@ -23,6 +23,7 @@ class DetailViewController: UIViewController, SettingsDelegate {
     var annotationManager: AnnotationManager!
     
     // MARK: - Outlets
+    @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet var gradientView: GradientView!
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -32,6 +33,8 @@ class DetailViewController: UIViewController, SettingsDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         applyTheme()
+        guard let annotationSelected = annotationManager.annotationSelected else { return }
+        checkIfAnnotionInFavoriteToRefreshButton(annotationSelected: annotationSelected)
     }
     
     // MARK: - Theme Methods
@@ -50,9 +53,35 @@ class DetailViewController: UIViewController, SettingsDelegate {
     }
     
     // MARK: - IBActions
-    @IBAction func addStationInFavorites(_ sender: UIBarButtonItem) {
+    @IBAction func addStationInFavorites(_ sender: UIButton) {
+        
         guard let annotationSelected = annotationManager.annotationSelected else { return }
-        coreDataManager.create(station: annotationSelected)
+        
+        let favoriteManager = FavoriteManager()
+        let canSave = favoriteManager.saveStation(annotation: annotationSelected, coreDataManager: coreDataManager)
+        
+        refreshFavoriteButton(canSave: canSave.okToSaved, favoriteButton: favoriteButton)
+        
+    }
+    
+    func checkIfAnnotionInFavoriteToRefreshButton(annotationSelected: CustomAnnotation) {
+        for station in coreDataManager.favoritesStation {
+            if station.latitude == annotationSelected.field?.coordonnees?.first,
+                station.longitude == annotationSelected.field?.coordonnees?.last,
+                station.name == annotationSelected.field?.n_station {
+                favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+                return
+            }
+        }
+        favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
+    }
+    
+    func refreshFavoriteButton(canSave:Bool, favoriteButton: UIButton) {
+        if canSave {
+            favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+        } else {
+            favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
+        }
     }
     
     @IBAction func goToMapsAppAction() {

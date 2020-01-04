@@ -12,6 +12,11 @@ class AnnotationManager {
 
     let datas = Datas()
     
+    private var coreDataManager: CoreDataManager {
+        guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
+        return cdm
+    }
+    
     // array containing the name of the properties of the json returned by the api
     var labelsFieldAfterConvert = [String]()
     

@@ -31,6 +31,8 @@
 		52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8323B57507003E5026 /* SettingsDelegate.swift */; };
 		52912E8B23B79E68003E5026 /* Charge_Map.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8923B79E68003E5026 /* Charge_Map.xcdatamodeld */; };
 		52912E8D23B7A68F003E5026 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52912E8C23B7A68F003E5026 /* Station.swift */; };
+		529F0A2323BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529F0A2223BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift */; };
+		52C3322C23BEB3200051312B /* FavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C3322B23BEB3200051312B /* FavoriteTableViewController.swift */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
 		52DB5A5723BE923200347EB6 /* FavoriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DB5A5623BE923200347EB6 /* FavoriteManager.swift */; };
 		52F052E923B983B7006B770F /* RedirectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052E823B983B7006B770F /* RedirectionDelegate.swift */; };
@@ -78,6 +80,8 @@
 		52912E8323B57507003E5026 /* SettingsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDelegate.swift; sourceTree = "<group>"; };
 		52912E8A23B79E68003E5026 /* Charge_Map.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Charge_Map.xcdatamodel; sourceTree = "<group>"; };
 		52912E8C23B7A68F003E5026 /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
+		529F0A2223BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCellDelegate.swift; sourceTree = "<group>"; };
+		52C3322B23BEB3200051312B /* FavoriteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTableViewController.swift; sourceTree = "<group>"; };
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52DB5A5623BE923200347EB6 /* FavoriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteManager.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				52156685238630E3000270F1 /* DetailViewController.swift */,
 				5224C87F23AECBD5001D1B34 /* TableViewController.swift */,
 				52656AB823B43B940013C028 /* SettingViewController.swift */,
+				52C3322B23BEB3200051312B /* FavoriteTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 			children = (
 				52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */,
 				52F052EB23B98568006B770F /* AlertActionDelegate.swift */,
+				529F0A2223BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift */,
 				52912E8323B57507003E5026 /* SettingsDelegate.swift */,
 				52F052E823B983B7006B770F /* RedirectionDelegate.swift */,
 			);
@@ -329,6 +335,7 @@
 			files = (
 				52424824239FA4980017D848 /* Datas.swift in Sources */,
 				52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */,
+				52C3322C23BEB3200051312B /* FavoriteTableViewController.swift in Sources */,
 				520B863123AF48A0002F8DA6 /* Word.swift in Sources */,
 				52F2480D23B0194200B1DE0A /* AnnotationManager.swift in Sources */,
 				52F052E923B983B7006B770F /* RedirectionDelegate.swift in Sources */,
@@ -345,6 +352,7 @@
 				52160DCD238EB53200BA950B /* CustomCollectionViewCell.swift in Sources */,
 				52912E8423B57507003E5026 /* SettingsDelegate.swift in Sources */,
 				521566752385DD34000270F1 /* MapViewController.swift in Sources */,
+				529F0A2323BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift in Sources */,
 				52F052EE23B9920D006B770F /* CoreDataManager.swift in Sources */,
 				521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */,
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
