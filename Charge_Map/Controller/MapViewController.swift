@@ -25,7 +25,11 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     var lastLocation: CLLocationCoordinate2D? = nil {
         willSet {
             if newValue != nil {
-                getAnnotations(userPosition: newValue)
+                getAnnotations(userPosition: newValue, completion: { (success) in
+                    guard success else { return }
+                    self.updateMapView(with: self.annotationManager.annotations)
+                    print("appel fini")
+                })
             }
         }
     }
@@ -37,32 +41,83 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     // contains the gps coordinates of the annotation that has been selected
     var coordinatesSelectedAnnotation: CLLocationCoordinate2D?
     
+    // false = isOff, true = isOn
+    var lastValueFreeFilter = false
+    var lastValueGetAllAnnotationFilter = false
+    
     // MARK: Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        lastValueFreeFilter = annotationManager.filterFreeIsOn
+        lastValueGetAllAnnotationFilter = annotationManager.filterGetAllAnnotationsIsOn
         addNotificationWillEnterForeground()
         setupController()
         setupUserLocation()
     }
     
-    private func applyOrRemoveFilterAnnotations() {
-        if annotationManager.filterIsOn {
-            filterFreeAnnotations(mapView: mapView, annotations: annotationManager.annotations)
+    fileprivate func applyFreeFilterOrNotAndUpdate(filterFreeIsOn: Bool) {
+        if filterFreeIsOn {
+            let filter = self.filterFreeAnnotations(annotations: self.annotationManager.annotations)
+            self.updateMapView(with: filter)
         } else {
-            removeFilterAnnotation(annotationManager: annotationManager, mapView: mapView)
+            self.updateMapView(with: self.annotationManager.annotations)
+        }
+    }
+    
+    fileprivate func applyOrRemoveFilterGetAllAnnotations() {
+        
+        let filterGetAllAnnotations = annotationManager.filterGetAllAnnotationsIsOn
+        let filterFreeIsOn = annotationManager.filterFreeIsOn
+        
+        if filterGetAllAnnotations || filterFreeIsOn, filterGetAllAnnotations != lastValueGetAllAnnotationFilter || filterFreeIsOn != lastValueFreeFilter {
+            if filterGetAllAnnotations {
+                getAnnotations(userPosition: nil, completion: { (success) in
+                    guard success else { return }
+                    self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
+                })
+            } else {
+                getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
+                    guard success else { return }
+                    self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
+                })
+            }
+            
+        } else {
+            if annotationManager.annotations.isEmpty == false, filterFreeIsOn != lastValueFreeFilter || filterGetAllAnnotations != lastValueGetAllAnnotationFilter {
+                getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
+                    guard success else { return }
+                    self.updateMapView(with: self.annotationManager.annotations)
+                })
+            }
+        }
+        
+        lastValueFreeFilter = annotationManager.filterFreeIsOn
+        lastValueGetAllAnnotationFilter = annotationManager.filterGetAllAnnotationsIsOn
+        
+    }
+    
+    private func applyOrRemoveFilterFreeAnnotations() {
+        
+        let filter = filterFreeAnnotations(annotations: annotationManager.annotations)
+        
+        if annotationManager.filterFreeIsOn {
+            if annotationManager.annotations != filter {
+                updateMapView(with: filter)
+            }
+        } else {
+            updateMapView(with: annotationManager.annotations)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        applyOrRemoveFilterGetAllAnnotations()
         refreshImageFavoriteButton()
-        applyOrRemoveFilterAnnotations()
         applyTheme(theme: Datas.choosenTheme, view: nil, navigationBar: navigationController?.navigationBar, reverse: false)
         navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        setupUserLocation()
     }
     
     // MARK: @IBActions
@@ -94,11 +149,11 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
     }
     
-    private func updateMapView() {
+    private func updateMapView(with annotations: [CustomAnnotation]) {
         DispatchQueue.main.async {
             self.mapView.removeAllAnnotations()
             self.mapView.showsUserLocation = true
-            self.mapView.addAnnotations(self.annotationManager.annotations)
+            self.mapView.addAnnotations(annotations)
             self.mapView.showAllAnnotations()
         }
     }
@@ -130,7 +185,7 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     }
     
     // MARK: - Network Call
-    func getAnnotations(userPosition: CLLocationCoordinate2D?) {
+    func getAnnotations(userPosition: CLLocationCoordinate2D?, completion: @escaping (Bool) -> Void) {
         
         annotationManager.annotations.removeAll()
         mapView.removeAllAnnotations()
@@ -139,11 +194,11 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
         
         apiHelper.getAnnotations { (success, result) in
             
-            guard success, let result = result else { return print("problem") }
+            guard success, let result = result else { return completion(false) }
             
             self.recordsWithoutDuplicates = self.apiHelper.removeDuplicateRecords(result: result, annotationManager: self.annotationManager)
             self.createAllAnnotationsFromRecorsWithoutDuplicates()
-            self.updateMapView()
+            completion(true)
         }
     }
 }
@@ -334,7 +389,10 @@ extension MapViewController {
     
     func createActionsToAlert() -> [UIAlertAction] {
         let action1 = UIAlertAction(title: "Récupèrer toutes les annotations", style: .default) { (_) in
-            self.getAnnotations(userPosition: nil)
+            self.getAnnotations(userPosition: nil, completion: { (success) in
+                guard success else { return }
+                print("action pour alert crée")
+            })
         }
         
         let action2 = UIAlertAction(title: "Accéder aux réglages", style: .default) { (_) in

@@ -12,13 +12,16 @@ class SettingViewController: UIViewController, SettingsDelegate {
 
     @IBOutlet var gradientView: GradientView!
     @IBOutlet weak var freeAnnotationsSwitch: UISwitch!
+    @IBOutlet weak var getAllAnnotationsSwitch: UISwitch!
     
     var annotationManager: AnnotationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        freeAnnotationsSwitch.isOn = annotationManager.filterIsOn
+        
+        freeAnnotationsSwitch.isOn = annotationManager.filterFreeIsOn
+        getAllAnnotationsSwitch.isOn = annotationManager.filterGetAllAnnotationsIsOn
+        
         navigationController?.navigationBar.isHidden = false
         guard let view = view as? GradientView else { return }
         applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
@@ -53,10 +56,17 @@ class SettingViewController: UIViewController, SettingsDelegate {
     
     @IBAction func filterFreeAnnotationSwitch(_ sender: UISwitch) {
         if sender.isOn {
-            annotationManager.filterIsOn = true
+            annotationManager.filterFreeIsOn = true
         } else {
-            annotationManager.filterIsOn = false
+            annotationManager.filterFreeIsOn = false
         }
     }
     
+    @IBAction func getAllAnnotationsSwitch(_ sender: UISwitch) {
+        if sender.isOn {
+            annotationManager.filterGetAllAnnotationsIsOn = true
+        } else {
+            annotationManager.filterGetAllAnnotationsIsOn = false
+        }
+    }
 }

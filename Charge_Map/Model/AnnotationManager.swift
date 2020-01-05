@@ -10,7 +10,8 @@ class AnnotationManager {
 
     let datas = Datas()
     
-    var filterIsOn = false
+    var filterFreeIsOn = false
+    var filterGetAllAnnotationsIsOn = false
     
     // array containing the name of the properties of the json returned by the api
     var labelsFieldAfterConvert = [String]()

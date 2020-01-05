@@ -542,7 +542,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="ve8-Bo-ZNs">
-                                <rect key="frame" x="24.5" y="514.5" width="365.5" height="77.5"/>
+                                <rect key="frame" x="24.5" y="514.5" width="365.5" height="134"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtres:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-3w-3kH">
                                         <rect key="frame" x="0.0" y="0.0" width="365.5" height="21.5"/>
@@ -565,7 +565,24 @@
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5KN-ke-CvO">
                                                 <rect key="frame" x="316.5" y="0.0" width="51" height="21"/>
                                                 <connections>
-                                                    <action selector="filterFreeAnnotationSwitch:" destination="kkg-da-LhS" eventType="valueChanged" id="oeG-q8-g8G"/>
+                                                    <action selector="filterFreeAnnotationSwitch:" destination="kkg-da-LhS" eventType="valueChanged" id="fcn-q2-Rug"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="N3V-0p-Imi">
+                                        <rect key="frame" x="0.0" y="112.5" width="365.5" height="21.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recuperer toute les bornes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5C-v0-JUI">
+                                                <rect key="frame" x="0.0" y="0.0" width="308.5" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jIN-jq-yyO">
+                                                <rect key="frame" x="316.5" y="0.0" width="51" height="21.5"/>
+                                                <connections>
+                                                    <action selector="getAllAnnotationsSwitch:" destination="kkg-da-LhS" eventType="valueChanged" id="hJE-PP-iLr"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -935,6 +952,7 @@
                     <navigationItem key="navigationItem" title="Paramètres" id="Iul-sW-wQs"/>
                     <connections>
                         <outlet property="freeAnnotationsSwitch" destination="5KN-ke-CvO" id="Jqf-Mu-roK"/>
+                        <outlet property="getAllAnnotationsSwitch" destination="jIN-jq-yyO" id="B41-XS-lHU"/>
                         <outlet property="gradientView" destination="lm4-r5-Vni" id="6bt-QZ-h3X"/>
                     </connections>
                 </viewController>
