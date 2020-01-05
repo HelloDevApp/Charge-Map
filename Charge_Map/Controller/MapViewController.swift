@@ -42,6 +42,7 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
         super.viewDidLoad()
         addNotificationWillEnterForeground()
         setupController()
+        setupUserLocation()
     }
     
     private func applyOrRemoveFilterAnnotations() {
@@ -61,7 +62,7 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupUserLocation()
+//        setupUserLocation()
     }
     
     // MARK: @IBActions
@@ -240,6 +241,12 @@ extension MapViewController: CLLocationManagerDelegate, RedirectionDelegate {
                 presentAlertToDeniedCase()
             
             case .authorizedAlways, .authorizedWhenInUse:
+                if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == true {
+                    setupUserLocation()
+                }
+                if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == true {
+                    return
+                }
                 userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
                 userLocationManager.startUpdatingLocation()
             
@@ -291,7 +298,7 @@ extension MapViewController {
             userLocationManager.requestWhenInUseAuthorization()
             userLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             userLocationManager.startUpdatingLocation()
-        } else {
+        } else if CLLocationManager.locationServicesEnabled() == false, CLLocationManager.authorizationStatus() != .denied {
             if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
                 return
             } else if annotationManager.annotations.isEmpty == false {
@@ -299,29 +306,33 @@ extension MapViewController {
             } else {
                 presentAlert(showCancelAction: false)
             }
+        } else {
+            switchAuthorizationStatusToExecuteAction(CLLocationManager.authorizationStatus())
         }
     }
     
     @objc func appEnterInForeground() {
-        if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == true {
-            setupUserLocation()
-        } else if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
-            presentAlert(showCancelAction: false)
-        } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
-            presentAlert(showCancelAction: true)
-        } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == true {
-            return
-        }
+        switchAuthorizationStatusToExecuteAction(CLLocationManager.authorizationStatus())
     }
     
 }
 
 
-// MARK: - ALERTS
+// MARK: - ALERTS Methods
 extension MapViewController {
     
     func presentAlert(showCancelAction: Bool) {
-        let alertController = UIAlertController(title: "Position non detectée", message: "Veuillez activer votre position.", preferredStyle: .actionSheet)
+        
+        let actions = createActionsToAlert()
+        
+        if showCancelAction {
+            presentAlert(controller: self, title: "Position non detectée", message: "Veuillez activer votre position.", actions: [actions[0], actions[1], actions[2]])
+        } else {
+            presentAlert(controller: self, title: "Position non detectée", message: "Veuillez activer votre position.", actions: [actions[0], actions[1]])
+        }
+    }
+    
+    func createActionsToAlert() -> [UIAlertAction] {
         let action1 = UIAlertAction(title: "Récupèrer toutes les annotations", style: .default) { (_) in
             self.getAnnotations(userPosition: nil)
         }
@@ -333,13 +344,8 @@ extension MapViewController {
         let action3 = UIAlertAction(title: "Retour à la carte", style: .cancel) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        
-        alertController.addAction(action1)
-        alertController.addAction(action2)
-        if showCancelAction {
-            alertController.addAction(action3)
-        }
-        self.present(alertController, animated: true, completion: nil)
+        let actions = [action1, action2, action3]
+        return actions
     }
 }
 

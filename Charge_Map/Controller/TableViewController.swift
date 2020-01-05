@@ -35,18 +35,14 @@ class TableViewController: UIViewController {
 // MARK: - Table View Data Source
 extension TableViewController: UITableViewDataSource, CustomTableViewCellDelegate {
     
-    
-    
-    func checkIfAnnotationIsInFavorites(cell: CustomTableViewCell, annotationSelected: CustomAnnotation) {
-        for station in coreDataManager.favoritesStation {
-            if station.latitude == annotationSelected.field?.coordonnees?.first,
-                station.longitude == annotationSelected.field?.coordonnees?.last,
-                station.name == annotationSelected.field?.n_station {
-                cell.favoriteImageView.isHidden = false
-                return
-            }
+    func refreshFavoriteImageViewToCell(favoriteCell: CustomTableViewCell, annotationSelected: CustomAnnotation) {
+        let favoriteManager = FavoriteManager()
+        
+        if favoriteManager.checkIfAnnotationIsInFavorites(annotationSelected: annotationSelected, coreDataManager: coreDataManager) {
+            favoriteCell.favoriteImageView.isHidden = false
+        } else {
+            favoriteCell.favoriteImageView.isHidden = true
         }
-        cell.favoriteImageView.isHidden = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -63,7 +59,7 @@ extension TableViewController: UITableViewDataSource, CustomTableViewCellDelegat
                 let contentView = cell.contentView
                 
                 fillCell(for: cell, with: annotations, indexPath: indexPath, annotationManager: annotationManager)
-                checkIfAnnotationIsInFavorites(cell: cell, annotationSelected: annotations[indexPath.row])
+                refreshFavoriteImageViewToCell(favoriteCell: cell, annotationSelected: annotations[indexPath.row])
                 
                 if indexPath.row % 2 == 0 {
                     addGradientToView(theme: Datas.choosenTheme, view: contentView, even: true)
@@ -103,12 +99,17 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate, Redirec
     
     private func createAddToFavoritesAlertAction(indexPath: IndexPath) -> UIAlertAction {
         // safeguard action
+        
         let addToFavoritesAlertAction = UIAlertAction(title: Word.addingStationInFav, style: .default) { (_) in
+            
             guard let annotation = self.annotationManager?.annotations[indexPath.row] else { return }
+            
             let favoriteManager = FavoriteManager()
             let _ = favoriteManager.saveStation(annotation: annotation, coreDataManager: self.coreDataManager)
-            guard let annotationManager = self.annotationManager else { return }
-            self.checkIfAnnotationIsInFavorites(cell: self.tableView.cellForRow(at: indexPath) as! CustomTableViewCell, annotationSelected: annotationManager.annotations[indexPath.row])
+            
+            self.refreshFavoriteImageViewToCell(favoriteCell: self.tableView.cellForRow(at: indexPath) as! CustomTableViewCell, annotationSelected: annotation)
+            
+            
         }
         return addToFavoritesAlertAction
     }

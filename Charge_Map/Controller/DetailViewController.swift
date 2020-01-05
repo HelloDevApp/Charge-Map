@@ -34,7 +34,9 @@ class DetailViewController: UIViewController, SettingsDelegate, RedirectionDeleg
         super.viewDidLoad()
         applyTheme()
         guard let annotationSelected = annotationManager.annotationSelected else { return }
-        checkIfAnnotionInFavoriteToRefreshButton(annotationSelected: annotationSelected)
+        let favoriteManager = FavoriteManager()
+        let isInFavorites = favoriteManager.checkIfAnnotationIsInFavorites(annotationSelected: annotationSelected, coreDataManager: coreDataManager)
+        refreshFavoriteButton(isInFavorites: isInFavorites, favoriteButton: favoriteButton)
     }
     
     // MARK: - Theme Methods
@@ -58,26 +60,15 @@ class DetailViewController: UIViewController, SettingsDelegate, RedirectionDeleg
         guard let annotationSelected = annotationManager.annotationSelected else { return }
         
         let favoriteManager = FavoriteManager()
-        let canSave = favoriteManager.saveStation(annotation: annotationSelected, coreDataManager: coreDataManager)
         
-        refreshFavoriteButton(canSave: canSave.okToSaved, favoriteButton: favoriteButton)
+        let isInFavorites = favoriteManager.saveStation(annotation: annotationSelected, coreDataManager: coreDataManager)
+        
+        refreshFavoriteButton(isInFavorites: isInFavorites, favoriteButton: favoriteButton)
         
     }
     
-    func checkIfAnnotionInFavoriteToRefreshButton(annotationSelected: CustomAnnotation) {
-        for station in coreDataManager.favoritesStation {
-            if station.latitude == annotationSelected.field?.coordonnees?.first,
-                station.longitude == annotationSelected.field?.coordonnees?.last,
-                station.name == annotationSelected.field?.n_station {
-                favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
-                return
-            }
-        }
-        favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
-    }
-    
-    func refreshFavoriteButton(canSave:Bool, favoriteButton: UIButton) {
-        if canSave {
+    func refreshFavoriteButton(isInFavorites:Bool, favoriteButton: UIButton) {
+        if isInFavorites {
             favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
         } else {
             favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)

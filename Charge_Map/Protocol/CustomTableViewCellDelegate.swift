@@ -36,15 +36,17 @@ extension CustomTableViewCellDelegate {
         )
     }
     
-    
+    // pass a Station or CustomAnnotation type annotation t/ pass an annotation array of type Station or of type CustomAnnotation in parameter to fill the cellsable to fill in the cells
     func fillCell(for cell: CustomTableViewCell, with annotations: [Any], indexPath: IndexPath, annotationManager: AnnotationManager?) {
         
         let annotation = annotations[indexPath.row]
         
+        // if array is CustomAnnotation type
         if let annotation = annotation as? CustomAnnotation {
             fillTextOfLabels(field: annotation.field, cell: cell, indexPath: indexPath, annotationManager: annotationManager)
         }
         
+        // if array is Station type
         if let annotation = annotation as? Station {
             
             let coordinate = [annotation.latitude, annotation.longitude]

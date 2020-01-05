@@ -10,45 +10,51 @@ import Foundation
 
 class FavoriteManager: AlertActionDelegate {
     
-    func saveStation(annotation: CustomAnnotation, coreDataManager: CoreDataManager) -> (okToSaved: Bool, titleAction: String, messageAction: String) {
-        var canSave = true
-        let lat = annotation.coordinate.latitude
-        let long = annotation.coordinate.longitude
+    func saveStation(annotation: CustomAnnotation, coreDataManager: CoreDataManager) -> Bool {
         
-        for favoriteStation in coreDataManager.read() {
-            if favoriteStation.latitude != lat && favoriteStation.longitude != long {
-                canSave = true
-            } else {
-                canSave = false
-                break
-            }
-        }
+        let isSaved = saveOrDeleteStation(coreDataManager, annotation)
         
-        if switchCanSaveToreturnAlertDetails(canSave: canSave).okToSaved {
-            coreDataManager.create(station: annotation)
-            print("station ajouté")
+        if isSaved {
+            return true
         } else {
-            for station in coreDataManager.read() {
-                if station.latitude == annotation.coordinate.latitude,
-                    station.longitude == annotation.coordinate.longitude,
-                    station.name == annotation.field?.n_station {
-                    coreDataManager.delete(station_: station)
-                    print("station supprimé")
-                    break
-                }
-            }
+            return false
         }
         
-        return switchCanSaveToreturnAlertDetails(canSave: canSave)
     }
     
-    private func switchCanSaveToreturnAlertDetails(canSave: Bool) -> (okToSaved: Bool, titleAction: String, messageAction: String) {
-        
-        switch canSave {
-            case true:
-                return (true, "OK", "Station de charge sauvegardé dans vos favoris")
-            case false:
-            return (false, "Oups", "Cette Station de charge est deja dans vos favoris")
+    func checkIfAnnotationIsInFavorites(annotationSelected: CustomAnnotation, coreDataManager: CoreDataManager) -> Bool {
+        for station in coreDataManager.favoritesStation {
+            if station.latitude == annotationSelected.field?.coordonnees?.first,
+                station.longitude == annotationSelected.field?.coordonnees?.last,
+                station.name == annotationSelected.field?.n_station {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func saveOrDeleteStation(_ coreDataManager: CoreDataManager, _ annotation: CustomAnnotation) -> Bool {
+        if checkIfAnnotationIsInFavorites(annotationSelected: annotation, coreDataManager: coreDataManager) == false {
+            coreDataManager.create(station: annotation)
+            print("station ajouté")
+            return true
+        } else {
+            deleteStationIfItIsAlreadyInFavorites(coreDataManager, annotation)
+            print("station supprimé")
+            return false
+        }
+    }
+    
+    private func deleteStationIfItIsAlreadyInFavorites(_ coreDataManager: CoreDataManager, _ annotation: CustomAnnotation) {
+        for station in coreDataManager.read() {
+            if station.latitude == annotation.coordinate.latitude,
+                station.longitude == annotation.coordinate.longitude,
+                station.name == annotation.field?.n_station {
+                
+                coreDataManager.delete(station_: station)
+                
+                break
+            }
         }
     }
 }
