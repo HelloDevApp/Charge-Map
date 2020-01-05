@@ -12,6 +12,8 @@ class AnnotationManager {
 
     let datas = Datas()
     
+    var filterIsOn = false
+    
     private var coreDataManager: CoreDataManager {
         guard let cdm = (UIApplication.shared.delegate as? AppDelegate)?.coreDataManager else { return CoreDataManager() }
         return cdm

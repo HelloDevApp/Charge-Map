@@ -500,7 +500,7 @@
                         <outlet property="mapView" destination="SNS-cr-bqb" id="XIl-5m-pdg"/>
                         <segue destination="cD0-n8-al9" kind="show" identifier="mapVCToDetailVC" id="De8-Fm-hRD"/>
                         <segue destination="LXk-yV-HBG" kind="show" identifier="mapVCToTableVC" id="pDH-eE-8MD"/>
-                        <segue destination="kkg-da-LhS" kind="show" identifier="mapVCToSettingVC" id="kKp-Ga-QT4"/>
+                        <segue destination="kkg-da-LhS" kind="show" identifier="mapVCToSettingsVC" id="kKp-Ga-QT4"/>
                         <segue destination="yB4-9o-BJN" kind="show" identifier="mapVCToFavoriteVC" id="ufX-QM-CY1"/>
                     </connections>
                 </viewController>
@@ -541,15 +541,37 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtres:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-3w-3kH">
-                                <rect key="frame" x="181.5" y="514.5" width="51.5" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="VJ0-3w-3kH" secondAttribute="height" multiplier="17:7" id="34M-Ua-ObA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="ve8-Bo-ZNs">
+                                <rect key="frame" x="24.5" y="514.5" width="365.5" height="77.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtres:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-3w-3kH">
+                                        <rect key="frame" x="0.0" y="0.0" width="365.5" height="21.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="VJ0-3w-3kH" secondAttribute="height" multiplier="120:7" id="34M-Ua-ObA"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="b8Z-2h-DPu">
+                                        <rect key="frame" x="0.0" y="56.5" width="365.5" height="21"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Afficher seulement les bornes gratuites" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="8oB-Xv-Bsr">
+                                                <rect key="frame" x="0.0" y="0.0" width="300.5" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5KN-ke-CvO">
+                                                <rect key="frame" x="316.5" y="0.0" width="51" height="21"/>
+                                                <connections>
+                                                    <action selector="filterFreeAnnotationSwitch:" destination="kkg-da-LhS" eventType="valueChanged" id="oeG-q8-g8G"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="rxG-2K-zeS">
                                 <rect key="frame" x="20" y="158.5" width="374" height="306"/>
                                 <subviews>
@@ -884,14 +906,15 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="VJ0-3w-3kH" firstAttribute="top" secondItem="Q4D-LL-RFE" secondAttribute="bottom" constant="50" id="44k-dJ-Bes"/>
-                            <constraint firstItem="VJ0-3w-3kH" firstAttribute="centerX" secondItem="Te3-0q-i8V" secondAttribute="centerX" id="4WA-hL-Ijj"/>
                             <constraint firstItem="WGg-N0-d65" firstAttribute="centerX" secondItem="Te3-0q-i8V" secondAttribute="centerX" id="C7N-7z-4Yz"/>
                             <constraint firstItem="rxG-2K-zeS" firstAttribute="top" secondItem="Q4D-LL-RFE" secondAttribute="top" id="ECl-4I-dJz"/>
+                            <constraint firstItem="ve8-Bo-ZNs" firstAttribute="width" secondItem="lm4-r5-Vni" secondAttribute="width" multiplier="0.88285" id="IOu-As-BsU"/>
                             <constraint firstItem="rxG-2K-zeS" firstAttribute="bottom" secondItem="Q4D-LL-RFE" secondAttribute="bottom" id="Ihc-or-ueg"/>
                             <constraint firstItem="WGg-N0-d65" firstAttribute="top" secondItem="Te3-0q-i8V" secondAttribute="top" constant="30" id="NvG-jf-aGe"/>
                             <constraint firstItem="Te3-0q-i8V" firstAttribute="trailing" secondItem="rxG-2K-zeS" secondAttribute="trailing" constant="20" id="Qbl-ne-hfD"/>
+                            <constraint firstItem="ve8-Bo-ZNs" firstAttribute="top" secondItem="rxG-2K-zeS" secondAttribute="bottom" constant="50" id="Sn2-RQ-Lpr"/>
                             <constraint firstItem="rxG-2K-zeS" firstAttribute="leading" secondItem="Te3-0q-i8V" secondAttribute="leading" constant="20" id="TO4-Ba-fgo"/>
+                            <constraint firstItem="ve8-Bo-ZNs" firstAttribute="centerX" secondItem="Te3-0q-i8V" secondAttribute="centerX" id="UfU-xd-V2h"/>
                             <constraint firstItem="Q4D-LL-RFE" firstAttribute="top" secondItem="WGg-N0-d65" secondAttribute="bottom" constant="20" id="VbO-sD-MKE"/>
                             <constraint firstItem="Q4D-LL-RFE" firstAttribute="leading" secondItem="Te3-0q-i8V" secondAttribute="leading" constant="20" id="onI-Ao-s3F"/>
                             <constraint firstItem="Te3-0q-i8V" firstAttribute="trailing" secondItem="Q4D-LL-RFE" secondAttribute="trailing" constant="20" id="yes-L5-cpC"/>
@@ -911,6 +934,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Paramètres" id="Iul-sW-wQs"/>
                     <connections>
+                        <outlet property="freeAnnotationsSwitch" destination="5KN-ke-CvO" id="Jqf-Mu-roK"/>
                         <outlet property="gradientView" destination="lm4-r5-Vni" id="6bt-QZ-h3X"/>
                     </connections>
                 </viewController>
@@ -1131,6 +1155,6 @@
         <image name="tracking" width="170.5" height="170.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1yh-J5-Vci"/>
+        <segue reference="ufX-QM-CY1"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -35,6 +35,7 @@
 		52C3322C23BEB3200051312B /* FavoriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C3322B23BEB3200051312B /* FavoriteTableViewController.swift */; };
 		52C400DC23B074FB003BE3BF /* ProtocolUrlEncorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */; };
 		52DB5A5723BE923200347EB6 /* FavoriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DB5A5623BE923200347EB6 /* FavoriteManager.swift */; };
+		52DCDDCE23C1560E0054CF50 /* AnnotationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DCDDCD23C1560E0054CF50 /* AnnotationDelegate.swift */; };
 		52F052E923B983B7006B770F /* RedirectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052E823B983B7006B770F /* RedirectionDelegate.swift */; };
 		52F052EC23B98568006B770F /* AlertActionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052EB23B98568006B770F /* AlertActionDelegate.swift */; };
 		52F052EE23B9920D006B770F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F052ED23B9920D006B770F /* CoreDataManager.swift */; };
@@ -85,6 +86,7 @@
 		52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolUrlEncorder.swift; sourceTree = "<group>"; };
 		52C400DF23B08F30003BE3BF /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		52DB5A5623BE923200347EB6 /* FavoriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteManager.swift; sourceTree = "<group>"; };
+		52DCDDCD23C1560E0054CF50 /* AnnotationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationDelegate.swift; sourceTree = "<group>"; };
 		52F052E823B983B7006B770F /* RedirectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectionDelegate.swift; sourceTree = "<group>"; };
 		52F052EB23B98568006B770F /* AlertActionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionDelegate.swift; sourceTree = "<group>"; };
 		52F052ED23B9920D006B770F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				52C400DB23B074FB003BE3BF /* ProtocolUrlEncorder.swift */,
+				52DCDDCD23C1560E0054CF50 /* AnnotationDelegate.swift */,
 				52F052EB23B98568006B770F /* AlertActionDelegate.swift */,
 				529F0A2223BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift */,
 				52912E8323B57507003E5026 /* SettingsDelegate.swift */,
@@ -355,6 +358,7 @@
 				529F0A2323BEB6E5009F35F2 /* CustomTableViewCellDelegate.swift in Sources */,
 				52F052EE23B9920D006B770F /* CoreDataManager.swift in Sources */,
 				521566552385DA4B000270F1 /* SceneDelegate.swift in Sources */,
+				52DCDDCE23C1560E0054CF50 /* AnnotationDelegate.swift in Sources */,
 				521566792385DF73000270F1 /* CustomAnnotation.swift in Sources */,
 				52656AB923B43B940013C028 /* SettingViewController.swift in Sources */,
 				5224C88023AECBD5001D1B34 /* TableViewController.swift in Sources */,

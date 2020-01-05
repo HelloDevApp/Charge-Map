@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapViewController: UIViewController, SettingsDelegate {
+class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
@@ -40,15 +40,19 @@ class MapViewController: UIViewController, SettingsDelegate {
         super.viewDidLoad()
         addNotificationWillEnterForeground()
         setupController()
-        
-        if coreDataManager.read().isEmpty {
-            favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
+    }
+    
+    private func applyOrRemoveFilterAnnotations() {
+        if annotationManager.filterIsOn {
+            filterFreeAnnotations(mapView: mapView, annotations: annotationManager.annotations)
         } else {
-            favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+            removeFilterAnnotation(annotationManager: annotationManager, mapView: mapView)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        refreshImageFavoriteButton()
+        applyOrRemoveFilterAnnotations()
         applyTheme(theme: Datas.choosenTheme, view: nil, navigationBar: navigationController?.navigationBar, reverse: false)
         navigationController?.navigationBar.isHidden = true
     }
@@ -60,10 +64,11 @@ class MapViewController: UIViewController, SettingsDelegate {
     
     // MARK: @IBActions
     @IBAction func showSettingViewController(_ sender: UIButton) {
-        performSegue(withIdentifier: "mapVCToSettingVC", sender: nil)
+        performSegue(withIdentifier: "mapVCToSettingsVC", sender: nil)
     }
     
     @IBAction func showFavoritesView(_ sender: Any) {
+        guard coreDataManager.read().isEmpty == false else { return }
         performSegue(withIdentifier: "mapVCToFavoriteVC", sender: nil)
     }
     
@@ -95,11 +100,19 @@ class MapViewController: UIViewController, SettingsDelegate {
         }
     }
     
-    private func createAllAnnotations() {
+    private func createAllAnnotationsFromRecorsWithoutDuplicates() {
         for annotation in self.recordsWithoutDuplicates {
             if let annotation = annotation {
                 self.annotationManager.createAnnotation(annotation: annotation)
             }
+        }
+    }
+    
+    private func refreshImageFavoriteButton() {
+        if coreDataManager.read().isEmpty {
+            favoriteButton.setImage(#imageLiteral(resourceName: "star"), for: .normal)
+        } else {
+            favoriteButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
         }
     }
     
@@ -122,7 +135,7 @@ class MapViewController: UIViewController, SettingsDelegate {
             guard success, let result = result else { return print("problem") }
             
             self.recordsWithoutDuplicates = self.apiHelper.removeDuplicateRecords(result: result, annotationManager: self.annotationManager)
-            self.createAllAnnotations()
+            self.createAllAnnotationsFromRecorsWithoutDuplicates()
             self.updateMapView()
         }
     }
@@ -139,8 +152,9 @@ extension MapViewController: MKMapViewDelegate {
                 return customAnnotationView
             }
         }
-        
-        return mapView.view(for: annotation)
+        let view = mapView.view(for: annotation)
+        view?.displayPriority = .required
+        return view
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -160,6 +174,13 @@ extension MapViewController: MKMapViewDelegate {
 extension MapViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        prepareToDetailVC(segue: segue)
+        prepareToTableVC(segue: segue)
+        prepareToFavoriteVC(segue: segue)
+        prepareToSettingsVC(segue: segue)
+    }
+    
+    func prepareToDetailVC(segue: UIStoryboardSegue) {
         if segue.identifier == Word.mapVCToDetailVC,
             let detailVC = segue.destination as? DetailViewController {
             
@@ -171,12 +192,27 @@ extension MapViewController {
                     detailVC.annotationManager = annotationManager
                 }
             }
-        } else if segue.identifier == Word.mapVCToTableVC, let tableVC = segue.destination as? TableViewController {
+        }
+    }
+    
+    func prepareToTableVC(segue: UIStoryboardSegue) {
+        if segue.identifier == Word.mapVCToTableVC, let tableVC = segue.destination as? TableViewController {
             tableVC.annotationManager = annotationManager
-        } else if segue.identifier == "mapVCToFavoriteVC", let favoriteTableVC = segue.destination as? FavoriteTableViewController {
+        }
+    }
+    
+    func prepareToFavoriteVC(segue: UIStoryboardSegue) {
+        if segue.identifier == "mapVCToFavoriteVC", let favoriteTableVC = segue.destination as? FavoriteTableViewController {
             favoriteTableVC.annotationManager = annotationManager
         }
     }
+    
+    func prepareToSettingsVC(segue: UIStoryboardSegue) {
+        if segue.identifier == "mapVCToSettingsVC", let settingsVC = segue.destination as? SettingViewController {
+            settingsVC.annotationManager = annotationManager
+        }
+    }
+    
 }
 
 // MARK: LocationManagerDelegate
@@ -244,7 +280,6 @@ extension MapViewController: CLLocationManagerDelegate, RedirectionDelegate {
 extension MapViewController {
     
     func setupUserLocation() {
-//        lastLocation = nil
         userLocationManager.delegate = self
         if CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() != .denied {
             userLocationManager.requestWhenInUseAuthorization()

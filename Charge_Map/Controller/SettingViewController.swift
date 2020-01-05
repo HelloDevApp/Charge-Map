@@ -11,10 +11,14 @@ import UIKit
 class SettingViewController: UIViewController, SettingsDelegate {
 
     @IBOutlet var gradientView: GradientView!
+    @IBOutlet weak var freeAnnotationsSwitch: UISwitch!
+    
+    var annotationManager: AnnotationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        freeAnnotationsSwitch.isOn = annotationManager.filterIsOn
         navigationController?.navigationBar.isHidden = false
         guard let view = view as? GradientView else { return }
         applyTheme(theme: Datas.choosenTheme, view: view, navigationBar: navigationController?.navigationBar, reverse: false)
@@ -47,14 +51,12 @@ class SettingViewController: UIViewController, SettingsDelegate {
         }
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func filterFreeAnnotationSwitch(_ sender: UISwitch) {
+        if sender.isOn {
+            annotationManager.filterIsOn = true
+        } else {
+            annotationManager.filterIsOn = false
+        }
     }
-    */
-
+    
 }
