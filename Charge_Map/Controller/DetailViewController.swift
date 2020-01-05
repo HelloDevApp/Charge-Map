@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class DetailViewController: UIViewController, SettingsDelegate {
+class DetailViewController: UIViewController, SettingsDelegate, RedirectionDelegate {
     
     // MARK: - Properties
     // This array is required to scan the fields and automate the assignment of values to the label in the cells.
@@ -92,7 +92,7 @@ class DetailViewController: UIViewController, SettingsDelegate {
     
     // MARK: - Redirecting Methods
     private func goToMapsApp(destinationCoordinate: CLLocationCoordinate2D) {
-        annotationManager.getDirection(destinationCoordinate: destinationCoordinate)
+        getDirection(destinationCoordinate: destinationCoordinate)
     }
 }
 

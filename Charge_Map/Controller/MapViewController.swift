@@ -34,6 +34,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     let annotationManager = AnnotationManager()
     let userLocationManager = CLLocationManager()
     var recordsWithoutDuplicates: [Record?] = []
+    // contains the gps coordinates of the annotation that has been selected
+    var coordinatesSelectedAnnotation: CLLocationCoordinate2D?
     
     // MARK: Life Cycle Methods
     override func viewDidLoad() {
@@ -103,7 +105,11 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     private func createAllAnnotationsFromRecorsWithoutDuplicates() {
         for annotation in self.recordsWithoutDuplicates {
             if let annotation = annotation {
-                self.annotationManager.createAnnotation(annotation: annotation)
+                let annotationDetail = self.annotationManager.createAnnotation(annotation: annotation)
+                guard let annotationDetailUnwrapped = annotationDetail else { return }
+                let coordinate = CLLocationCoordinate2D(latitude: annotationDetailUnwrapped.lat, longitude: annotationDetailUnwrapped.long)
+                let annotation = CustomAnnotation(title: annotationDetailUnwrapped.title, subtitle: annotationDetailUnwrapped.subtitle, coordinate: coordinate, type: annotationDetailUnwrapped.paidorFree, field: annotationDetailUnwrapped.fields)
+                annotationManager.annotations.append(annotation)
             }
         }
     }
@@ -164,7 +170,7 @@ extension MapViewController: MKMapViewDelegate {
         } else {
             guard let annotation = view.annotation as? CustomAnnotation else { return }
             annotationManager.annotationSelected = annotation
-            annotationManager.coordinatesSelectedAnnotation = view.annotation?.coordinate
+            coordinatesSelectedAnnotation = view.annotation?.coordinate
             performSegue(withIdentifier: Word.mapVCToDetailVC, sender: nil)
         }
     }

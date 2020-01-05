@@ -79,7 +79,7 @@ extension TableViewController: UITableViewDataSource, CustomTableViewCellDelegat
 }
 
 // MARK: TableView Delegate
-extension TableViewController: UITableViewDelegate, AlertActionDelegate {
+extension TableViewController: UITableViewDelegate, AlertActionDelegate, RedirectionDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // create alert actions
@@ -96,7 +96,7 @@ extension TableViewController: UITableViewDelegate, AlertActionDelegate {
         let redirectingAlertAction = UIAlertAction(title: Word.getDirection, style: .default) { (_) in
             guard let coordinate = self.annotationManager?.annotations[indexPath.row].coordinate else { return }
            
-            self.annotationManager?.getDirection(destinationCoordinate: coordinate)
+            self.getDirection(destinationCoordinate: coordinate)
         }
         return redirectingAlertAction
     }
