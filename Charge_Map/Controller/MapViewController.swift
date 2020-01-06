@@ -76,18 +76,43 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
                     self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
                 })
             } else {
-                getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
-                    guard success else { return }
-                    self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
-                })
+                print(Datas.coordinateUser.longitude, Datas.coordinateUser.latitude)
+                
+                if Datas.coordinateUser.latitude != 0.0 || Datas.coordinateUser.longitude != 0.0 {
+                    getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
+                        guard success else { return }
+                        self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
+                    })
+                } else {
+                    getAnnotations(userPosition: nil, completion: { (success) in
+                        guard success else { return }
+                        self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
+                    })
+                }
             }
             
         } else {
-            if annotationManager.annotations.isEmpty == false, filterFreeIsOn != lastValueFreeFilter || filterGetAllAnnotations != lastValueGetAllAnnotationFilter {
+            
+            if annotationManager.annotations.isEmpty == false,
+                (filterFreeIsOn != lastValueFreeFilter || filterGetAllAnnotations != lastValueGetAllAnnotationFilter) &&
+                (Datas.coordinateUser.longitude != 0.0 || Datas.coordinateUser.latitude != 0.0) {
+                
                 getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
                     guard success else { return }
                     self.updateMapView(with: self.annotationManager.annotations)
                 })
+            } else if locationServiceIsEnabled() == false && annotationManager.annotations.isEmpty {
+                return
+            } else if locationServiceIsEnabled() == false && annotationManager.annotations.isEmpty == false {
+                return
+            } else if locationServiceIsEnabled() {
+                return
+            } else {
+                getAnnotations(userPosition: nil, completion: { (success) in
+                    guard success else { return }
+                    self.updateMapView(with: self.annotationManager.annotations)
+                })
+                
             }
         }
         
@@ -126,6 +151,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     }
     
     @IBAction func showFavoritesView(_ sender: Any) {
+        let actions = createActionsToAlert()
+        guard locationServiceIsEnabled() else { return presentAlert(controller: self, title: "Position Introuvable", message: "Activer votre position pour acceder a cette fonctionnalité.", actions: [actions[1], actions[2]])}
         guard coreDataManager.read().isEmpty == false else { return }
         performSegue(withIdentifier: "mapVCToFavoriteVC", sender: nil)
     }
@@ -214,9 +241,10 @@ extension MapViewController: MKMapViewDelegate {
                 return customAnnotationView
             }
         }
-        let view = mapView.view(for: annotation)
-        view?.displayPriority = .required
-        return view
+        guard let customAnnotation = annotation as? CustomAnnotation else { return mapView.view(for: annotation) }
+        let annotationView = CustomAnnotationView(annotation: customAnnotation, reuseIdentifier: customAnnotation.type.rawValue)
+        annotationView.displayPriority = .required
+        return annotationView
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -312,17 +340,17 @@ extension MapViewController: CLLocationManagerDelegate, RedirectionDelegate {
     
     private func presentAlertToRestrictedCase() {
         if annotationManager.annotations.isEmpty && locationServiceIsEnabled() == false {
-            presentAlert(showCancelAction: false)
+            presentAlert(showGetAllAnnotation: true, showCancelAction: false)
         } else if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
-            presentAlert(showCancelAction: true)
+            presentAlert(showGetAllAnnotation: false, showCancelAction: true)
         }
     }
     
     private func presentAlertToDeniedCase() {
         if annotationManager.annotations.isEmpty {
-            presentAlert(showCancelAction: false)
+            presentAlert(showGetAllAnnotation: true, showCancelAction: false)
         } else {
-            presentAlert(showCancelAction: true)
+            presentAlert(showGetAllAnnotation: false, showCancelAction: true)
         }
     }
     
@@ -357,9 +385,9 @@ extension MapViewController {
             if annotationManager.annotations.isEmpty == false && locationServiceIsEnabled() == false {
                 return
             } else if annotationManager.annotations.isEmpty == false {
-                presentAlert(showCancelAction: true)
+                presentAlert(showGetAllAnnotation: false, showCancelAction: true)
             } else {
-                presentAlert(showCancelAction: false)
+                presentAlert(showGetAllAnnotation: true, showCancelAction: false)
             }
         } else {
             switchAuthorizationStatusToExecuteAction(CLLocationManager.authorizationStatus())
@@ -376,15 +404,23 @@ extension MapViewController {
 // MARK: - ALERTS Methods
 extension MapViewController {
     
-    func presentAlert(showCancelAction: Bool) {
+    func presentAlert(showGetAllAnnotation: Bool, showCancelAction: Bool) {
         
         let actions = createActionsToAlert()
+        var actionsToPresent = [UIAlertAction]()
+        
+        
+        if showGetAllAnnotation {
+            actionsToPresent.append(actions[0])
+        }
+        
+        actionsToPresent.append(actions[1])
         
         if showCancelAction {
-            presentAlert(controller: self, title: "Position non detectée", message: "Veuillez activer votre position.", actions: [actions[0], actions[1], actions[2]])
-        } else {
-            presentAlert(controller: self, title: "Position non detectée", message: "Veuillez activer votre position.", actions: [actions[0], actions[1]])
+            actionsToPresent.append(actions[2])
         }
+        
+        presentAlert(controller: self, title: "Position non detectée", message: "Veuillez activer votre position.", actions: actionsToPresent)
     }
     
     func createActionsToAlert() -> [UIAlertAction] {
@@ -392,6 +428,7 @@ extension MapViewController {
             self.getAnnotations(userPosition: nil, completion: { (success) in
                 guard success else { return }
                 print("action pour alert crée")
+                self.updateMapView(with: self.annotationManager.annotations)
             })
         }
         
