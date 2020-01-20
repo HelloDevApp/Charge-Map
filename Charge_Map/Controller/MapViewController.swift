@@ -25,7 +25,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     var lastLocation: CLLocationCoordinate2D? = nil {
         willSet {
             if newValue != nil {
-                getAnnotations(userPosition: newValue, completion: { (success) in
+                getAnnotations(userPosition: newValue, completion: { (success, errorNetwork)  in
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: newValue)
                     guard success else { return }
                     self.updateMapView(with: self.annotationManager.annotations)
                     print("appel fini")
@@ -71,7 +72,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
         
         if filterGetAllAnnotations || filterFreeIsOn, filterGetAllAnnotations != lastValueGetAllAnnotationFilter || filterFreeIsOn != lastValueFreeFilter {
             if filterGetAllAnnotations {
-                getAnnotations(userPosition: nil, completion: { (success) in
+                getAnnotations(userPosition: nil, completion: { (success, errorNetwork) in
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: nil)
                     guard success else { return }
                     self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
                 })
@@ -79,12 +81,14 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
                 print(Datas.coordinateUser.longitude, Datas.coordinateUser.latitude)
                 
                 if Datas.coordinateUser.latitude != 0.0 || Datas.coordinateUser.longitude != 0.0 {
-                    getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
+                    getAnnotations(userPosition: Datas.coordinateUser, completion: { (success, errorNetwork) in
+                        self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: Datas.coordinateUser)
                         guard success else { return }
                         self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
                     })
                 } else {
-                    getAnnotations(userPosition: nil, completion: { (success) in
+                    getAnnotations(userPosition: nil, completion: { (success, errorNetwork) in
+                        self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: nil)
                         guard success else { return }
                         self.applyFreeFilterOrNotAndUpdate(filterFreeIsOn: filterFreeIsOn)
                     })
@@ -97,7 +101,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
                 (filterFreeIsOn != lastValueFreeFilter || filterGetAllAnnotations != lastValueGetAllAnnotationFilter) &&
                 (Datas.coordinateUser.longitude != 0.0 || Datas.coordinateUser.latitude != 0.0) {
                 
-                getAnnotations(userPosition: Datas.coordinateUser, completion: { (success) in
+                getAnnotations(userPosition: Datas.coordinateUser, completion: { (success, errorNetwork) in
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: Datas.coordinateUser)
                     guard success else { return }
                     self.updateMapView(with: self.annotationManager.annotations)
                 })
@@ -108,7 +113,8 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
             } else if locationServiceIsEnabled() {
                 return
             } else {
-                getAnnotations(userPosition: nil, completion: { (success) in
+                getAnnotations(userPosition: nil, completion: { (success, errorNetwork) in
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: nil)
                     guard success else { return }
                     self.updateMapView(with: self.annotationManager.annotations)
                 })
@@ -121,6 +127,34 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
         
     }
     
+    func presentErrorToErrorNetwork(errorNetwork: ErrorNetwork, userPosition: CLLocationCoordinate2D?) {
+        let restartCallAction = UIAlertAction(title: "Réessayer ?", style: .default, handler: { (_) in
+            if userPosition != nil && userPosition?.latitude != 0.0 && userPosition?.longitude != 0.0 {
+                self.getAnnotations(userPosition: userPosition) { (success, statusCode) in
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: userPosition)
+                    guard success else { return self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: userPosition) }
+                    self.updateMapView(with: self.annotationManager.annotations)
+                }
+            } else {
+                self.getAnnotations(userPosition: userPosition) { (success, statusCode) in
+                self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: userPosition)
+                guard success else { return self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: userPosition) }
+                self.updateMapView(with: self.annotationManager.annotations)
+                }
+            }
+        })
+        
+        switch errorNetwork {
+            case .noError: return
+            case .noAnnotationFound:
+                presentAlert(controller: self, title: "Erreur", message: "Aucune station trouvée", actions: [restartCallAction])
+            case .wrongJSON:
+                presentAlert(controller: self, title: "Erreur", message: "Response innatendu de la part du serveur.", actions: [restartCallAction])
+            case .requestHasFailed:
+                presentAlert(controller: self, title: "Erreur", message: "Vérifier votre connexion internet.", actions: [restartCallAction])
+        }
+    }
+
     private func applyOrRemoveFilterFreeAnnotations() {
         
         let filter = filterFreeAnnotations(annotations: annotationManager.annotations)
@@ -212,20 +246,22 @@ class MapViewController: UIViewController, SettingsDelegate, AnnotationDelegate 
     }
     
     // MARK: - Network Call
-    func getAnnotations(userPosition: CLLocationCoordinate2D?, completion: @escaping (Bool) -> Void) {
+    func getAnnotations(userPosition: CLLocationCoordinate2D?, completion: @escaping (Bool, ErrorNetwork) -> Void) {
         
         annotationManager.annotations.removeAll()
         mapView.removeAllAnnotations()
         
         addGeoFilterIfUserPositionIsNotNil(userPosition)
         
-        apiHelper.getAnnotations { (success, result) in
-            
-            guard success, let result = result else { return completion(false) }
+        apiHelper.getAnnotations { (success, result, errorNetwork) in
+            print("success: \(success)")
+            guard success else { return completion(false, .requestHasFailed) }
+                
+            guard let result = result else { return completion(false, .wrongJSON) }
             
             self.recordsWithoutDuplicates = self.apiHelper.removeDuplicateRecords(result: result, annotationManager: self.annotationManager)
             self.createAllAnnotationsFromRecorsWithoutDuplicates()
-            completion(true)
+            completion(true, .noError)
         }
     }
 }
@@ -424,8 +460,13 @@ extension MapViewController {
     }
     
     func createActionsToAlert() -> [UIAlertAction] {
-        let action1 = UIAlertAction(title: "Récupèrer toutes les annotations", style: .default) { (_) in
-            self.getAnnotations(userPosition: nil, completion: { (success) in
+        let action1 = UIAlertAction(title: "Récupérer toutes les annotations", style: .default) { (_) in
+            self.getAnnotations(userPosition: nil, completion: { (success, errorNetwork) in
+                if Datas.coordinateUser.longitude != 0.0 && Datas.coordinateUser.latitude != 0.0 {
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: Datas.coordinateUser)
+                } else {
+                    self.presentErrorToErrorNetwork(errorNetwork: errorNetwork, userPosition: nil)
+                }
                 guard success else { return }
                 print("action pour alert crée")
                 self.updateMapView(with: self.annotationManager.annotations)
@@ -455,4 +496,13 @@ extension MKMapView {
         self.removeAnnotations(self.annotations)
     }
 
+}
+
+
+
+enum ErrorNetwork: Swift.Error {
+    case noError
+    case wrongJSON
+    case requestHasFailed
+    case noAnnotationFound
 }

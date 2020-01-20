@@ -15,6 +15,7 @@ class ApiHelper: UrlEncoder {
     var path: String = Word.path
     
     private var task: URLSessionDataTask?
+    private var session: URLSession
     
     var parameters: [(key: String, value: String)] =
         [(Word.dataset.0, Word.dataset.1),
@@ -24,6 +25,10 @@ class ApiHelper: UrlEncoder {
          (Word.powerFacet.0, Word.powerFacet.1),
          (Word.accessibilityFacet.0, Word.accessibilityFacet.1),
          (Word.nameStationFacet.0, Word.nameStationFacet.1)]
+    
+    init(session: URLSession = URLSession(configuration: .default)) {
+        self.session = session
+    }
     
     // method that adds a parameter to the request to retrieve only nearby annotations
     func addGeofilterUrl(latitude: String, longitude: String) {
@@ -46,22 +51,42 @@ class ApiHelper: UrlEncoder {
     }
     
     // Allows to launch the network call to the api and returns a json in the callback if it's ok, else returns Nil
-    func getAnnotations(callback: @escaping (Bool, ApiResult?) -> Void) {
-//        addGeofilterUrl(latitude: "48.0909", longitude: "2.0302")
+    func getAnnotations(callback: @escaping (Bool, ApiResult?, ErrorNetwork) -> Void) {
         if let urlBase = createUrlBase(scheme: self.scheme, host: self.host, path: self.path),
             let url = encode(urlBase: urlBase, parameters: parameters) {
             print(url)
-            let session = URLSession(configuration: .default)
             
             let task = session.dataTask(with: url) { (data, response, error) in
-                guard let data = data, error == nil else { return }
                 
-                do {
-                    let json = try JSONDecoder().decode(ApiResult.self, from: data)
-                    callback(true, json)
-                } catch {
-                    callback(false, nil)
+                guard let data = data, error == nil else { return callback(false, nil, .requestHasFailed) }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    callback(false, nil, .wrongJSON)
+                    return
                 }
+                
+                switch response.statusCode {
+                    case 200...299:
+                        do {
+                            
+                            let json = try JSONDecoder().decode(ApiResult.self, from: data)
+                            
+                            if json.records.isEmpty == false {
+                                callback(true, json, .noError)
+                            } else {
+                                callback(true, json, .noAnnotationFound)
+                            }
+                        } catch {
+                            callback(false, nil, .wrongJSON)
+                    }
+                    
+                    case 400...599:
+                        callback(false, nil, .requestHasFailed)
+                    
+                    default:
+                        break
+                }
+                
             }
             task.resume()
         }
