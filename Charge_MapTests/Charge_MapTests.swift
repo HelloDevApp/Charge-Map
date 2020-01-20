@@ -10,6 +10,7 @@ import XCTest
 @testable import Charge_Map
 
 class Charge_MapTests: XCTestCase {
+    
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

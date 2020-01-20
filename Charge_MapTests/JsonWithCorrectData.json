@@ -1,0 +1,58 @@
+{
+"nhits": 11603,
+"parameters": {
+    "dataset": "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve",
+    "timezone": "UTC",
+    "rows": 1,
+    "format": "json",
+    "lang": "fr",
+    "facet": [
+        "nbre_pdc",
+        "puiss_max",
+        "accessibilite",
+        "n_station"
+    ]
+},
+"records": [
+    {
+        "datasetid": "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve",
+        "recordid": "40174686e1fe74af1cb918e567d6a188d7a05f2b",
+        "fields": {
+            "nom_reg": "PROVENCE-ALPES-COTE D'AZUR",
+            "accessibilite": "24h/24 7j/7",
+            "id_station": "FR*M13*P13115*001",
+            "code_insee": "13115",
+            "acces_recharge": "payant",
+            "n_amenageur": "Aix-Marseille-Provence",
+            "ad_station": "Route Du Château Bas 0 VERNEGUES",
+            "date_maj": "2019-11-25",
+            "source": "https://www.data.gouv.fr/fr/datasets/infrastructures-de-recharge-pour-vehicules-electriques-metropole-aix-marseille-provence/#resource-df57aa16-c578-45ae-9231-eb46ef5c56e3",
+            "puiss_max": 22.0,
+            "observations": "Recharge par badge et avec une application smartphone",
+            "n_station": "VERNEGUES - Route Du Château Bas",
+            "id_pdc": "FR*M13*E13115*001*2",
+            "nbre_pdc": 2,
+            "code_epci": "200054807",
+            "commune": "Vernègues",
+            "nom_epci": "Métropole d'Aix-Marseille-Provence",
+            "nom_dep": "BOUCHES-DU-RHONE",
+            "coordonnees": [
+                43.689299,
+                5.205005
+            ],
+            "type_prise": "EF - T2",
+            "n_enseigne": "MAMP",
+            "n_operateur": "BOUYGUES ENERGIES ET SERVICES"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                5.205005,
+                43.689299
+            ]
+        },
+        "record_timestamp": "2019-12-31T12:01:00.573000+00:00"
+    }
+],
+}
+

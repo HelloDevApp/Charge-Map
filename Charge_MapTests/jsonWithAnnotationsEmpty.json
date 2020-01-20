@@ -1,0 +1,17 @@
+{
+"nhits": 11603,
+"parameters": {
+    "dataset": "fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve",
+    "timezone": "UTC",
+    "rows": 1,
+    "format": "json",
+    "lang": "fr",
+    "facet": [
+        "nbre_pdc",
+        "puiss_max",
+        "accessibilite",
+        "n_station"
+    ]
+},
+"records": [],
+}
